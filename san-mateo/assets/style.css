@@ -1,0 +1,144 @@
+/* Terreno San Mateo / Hacienda La Maravilla — Inmobiliaria JMK */
+:root {
+  --navy: #17183E;
+  --navy-soft: #24265A;
+  --gold: #C9A24B;
+  --gold-ink: #7A5E1F;      /* dorado legible sobre fondos claros */
+  --cream: #F7F3EC;
+  --paper: #FFFDF9;
+  --line: #E2DAC8;
+  --display: "Marcellus", "Trajan Pro", "Cinzel", Georgia, "Times New Roman", serif;
+  --body: "Albert Sans", "Helvetica Neue", Arial, sans-serif;
+  --pad: clamp(1.25rem, 4vw, 3rem);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+body { margin: 0; font-family: var(--body); font-size: 1.0625rem; line-height: 1.6; color: var(--navy); background: var(--paper); }
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+h1, h2 { font-family: var(--display); font-weight: 400; line-height: 1.08; margin: 0; text-wrap: balance; }
+h2 { font-size: clamp(1.9rem, 4.2vw, 3.1rem); max-width: 22ch; }
+p { margin: 0; }
+.skip { position: absolute; left: -999px; top: 0; background: var(--gold); color: var(--navy); padding: .6rem 1rem; z-index: 50; }
+.skip:focus { left: 0; }
+
+/* ---------- barra superior */
+.top { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 1.5rem; padding: .55rem var(--pad); background: var(--cream); border-bottom: 1px solid var(--line); }
+.brand img { height: 48px; width: auto; }
+.nav, .langs { list-style: none; margin: 0; padding: 0; display: flex; }
+.top nav:first-of-type { margin-right: auto; }
+.nav { gap: 1.6rem; font-size: .95rem; font-weight: 500; }
+.nav a { text-decoration: none; padding: .4rem 0; border-bottom: 2px solid transparent; }
+.nav a:hover { border-bottom-color: var(--gold); }
+.langs { gap: .35rem; }
+.langs a { display: flex; align-items: center; gap: .45rem; padding: .35rem .55rem; border: 1px solid transparent; border-radius: 4px; text-decoration: none; font-size: .85rem; font-weight: 500; }
+.langs img { width: 26px; height: auto; border: 1px solid var(--line); }
+.langs a[aria-current="page"] { border-color: var(--navy); background: var(--paper); }
+.langs a:hover { border-color: var(--gold); }
+
+/* ---------- portada: el lote sobre la imagen satelital */
+.hero { position: relative; min-height: min(88vh, 54rem); display: flex; align-items: flex-end; background: var(--navy); isolation: isolate; }
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 68% 40%; z-index: -2; }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(23,24,62,.94) 0%, rgba(23,24,62,.80) 34%, rgba(23,24,62,.12) 62%, rgba(23,24,62,0) 100%); }
+.hero-copy { padding: clamp(3rem, 8vw, 6rem) var(--pad); max-width: 44rem; color: #fff; }
+.hero h1 { font-size: clamp(2.6rem, 7vw, 5.4rem); letter-spacing: -.01em; }
+.lede { margin-top: 1.4rem; font-size: clamp(1.05rem, 1.6vw, 1.25rem); max-width: 34rem; color: var(--cream); }
+.price { margin-top: 1.8rem; font-family: var(--display); font-size: clamp(2rem, 4.4vw, 3.2rem); line-height: 1.1; color: var(--gold); }
+.price span { display: block; margin-top: .35rem; font-family: var(--body); font-size: 1rem; color: var(--cream); }
+.actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+.btn { display: inline-block; padding: .9rem 1.5rem; border-radius: 3px; font-weight: 700; text-decoration: none; border: 2px solid var(--gold); }
+.btn-gold { background: var(--gold); color: var(--navy); }
+.btn-gold:hover { background: #D9B462; border-color: #D9B462; }
+.btn-line { color: #fff; border-color: rgba(255,255,255,.7); }
+.btn-line:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ---------- datos clave */
+.facts { margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--navy); color: #fff; border-top: 4px solid var(--gold); }
+.fact { padding: 1.6rem var(--pad); display: flex; flex-direction: column-reverse; justify-content: flex-end; border-left: 1px solid rgba(201,162,75,.35); }
+.fact:first-child { border-left: 0; }
+.fact dd { margin: 0; font-family: var(--display); font-size: clamp(1.5rem, 2.6vw, 2.1rem); line-height: 1.15; color: var(--gold); }
+.fact dt { margin-top: .4rem; font-size: .92rem; color: var(--cream); }
+
+/* ---------- secciones */
+.band { padding: clamp(3.5rem, 8vw, 7rem) 0; }
+.band.cream { background: var(--cream); }
+.band.navy { background: var(--navy); color: #fff; }
+.wrap { max-width: 76rem; margin: 0 auto; padding: 0 var(--pad); }
+.wrap + .wrap { margin-top: clamp(2.5rem, 5vw, 4rem); }
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+.big { margin-top: 1.5rem; font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.55; max-width: 38rem; }
+.narrow { max-width: 44rem; }
+.sub { margin: 2.4rem 0 .7rem; font-family: var(--body); font-size: 1rem; font-weight: 700; color: var(--gold-ink); }
+.navy .sub { color: var(--gold); }
+.sub + p { max-width: 38rem; }
+figure { margin: 0; }
+figcaption { margin-top: .55rem; font-size: .88rem; line-height: 1.4; color: #4A4B6B; }
+.navy figcaption { color: #C9C6D8; }
+figure a { display: block; }
+figure img { width: 100%; }
+
+/* lista de verificación: cada fila es un requisito ya cumplido */
+.checks { list-style: none; margin: 2.8rem 0 0; padding: 0; border-bottom: 1px solid var(--line); }
+.checks li { display: grid; grid-template-columns: 2.4rem minmax(11rem, 17rem) 1fr; gap: .4rem 1.2rem; align-items: baseline; padding: 1.25rem 0; border-top: 1px solid var(--line); }
+.checks svg { color: var(--gold-ink); align-self: center; }
+.checks h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 1.4rem; line-height: 1.2; }
+
+.wide { margin-top: 2.8rem; }
+.grid { display: grid; gap: clamp(.8rem, 2vw, 1.5rem); }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+.g3 { grid-template-columns: repeat(3, 1fr); margin-top: 2.8rem; }
+
+.plain { margin: 1.6rem 0 0; padding: 0; list-style: none; max-width: 38rem; }
+.plain li { padding: .8rem 0; border-top: 1px solid var(--line); }
+.times { background: var(--cream); padding: clamp(1.4rem, 3vw, 2.4rem); border-left: 4px solid var(--gold); }
+.times .sub { margin-top: 0; }
+.times dl { margin: 0; }
+.times dl div { display: flex; justify-content: space-between; align-items: baseline; gap: 1.5rem; padding: .9rem 0; border-top: 1px solid var(--line); }
+.times dd { margin: 0; font-family: var(--display); font-size: 1.5rem; white-space: nowrap; }
+
+.detail { margin-top: clamp(2.5rem, 5vw, 4rem); grid-template-columns: minmax(0, 7fr) minmax(0, 3fr); }
+table { width: 100%; border-collapse: collapse; font-size: 1rem; }
+th, td { text-align: left; vertical-align: top; padding: .75rem .9rem .75rem 0; border-top: 1px solid var(--line); }
+th { width: 34%; font-weight: 700; }
+.plano img { background: #fff; border: 1px solid var(--line); }
+
+.contact h2 { max-width: 18ch; }
+.links { margin: 3rem 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; border-top: 1px solid rgba(201,162,75,.4); padding-top: 1.6rem; }
+.links dt { font-size: .9rem; color: var(--gold); }
+.links dd { margin: .2rem 0 0; overflow-wrap: anywhere; }
+
+.foot { display: flex; align-items: center; gap: 1.2rem; padding: 1.6rem var(--pad); background: var(--cream); font-size: .88rem; }
+.foot img { height: 56px; width: auto; }
+
+/* visor de imágenes */
+.lb { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 96vh; }
+.lb::backdrop { background: rgba(23,24,62,.92); }
+.lb img { max-width: 96vw; max-height: 88vh; width: auto; margin: 0 auto; }
+.lb button { display: block; margin: 0 0 .6rem auto; padding: .5rem 1rem; font: 700 .95rem var(--body); color: var(--navy); background: var(--gold); border: 0; border-radius: 3px; cursor: pointer; }
+
+/* ---------- adaptación a pantallas pequeñas */
+@media (max-width: 62rem) {
+  .nav { display: none; }
+  .top nav:last-of-type { margin-left: auto; }
+  .split, .detail { grid-template-columns: 1fr; }
+  .facts { grid-template-columns: repeat(2, 1fr); }
+  .fact:nth-child(3) { border-left: 0; }
+  .fact:nth-child(n+3) { border-top: 1px solid rgba(201,162,75,.35); }
+  .g4, .links { grid-template-columns: repeat(2, 1fr); }
+  .g3 { grid-template-columns: repeat(2, 1fr); }
+  .plano { max-width: 22rem; }
+  .hero { min-height: 0; flex-direction: column; align-items: stretch; }
+  .hero-img { position: static; height: 58vw; min-height: 15rem; max-height: 30rem; z-index: 0; object-position: 78% 38%; }
+  .hero::after { display: none; }
+  .hero-copy { padding-top: 2.2rem; max-width: none; }
+}
+@media (max-width: 40rem) {
+  .langs span { display: none; }
+  .checks li { grid-template-columns: 2.2rem 1fr; }
+  .checks p { grid-column: 2; }
+  .g3 { grid-template-columns: 1fr; }
+  .times dl div { flex-direction: column; gap: .1rem; }
+  .btn { width: 100%; text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
