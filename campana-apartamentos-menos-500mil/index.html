@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Apartamentos por menos de ₡500.000</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Campaña Inmobiliaria JMK: apartamentos en alquiler en Tibás, Barrio Otoya, Rohrmoser, Paso Ancho y Escazú.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+/* Layout: neon-night campaign — key-visual hero, then one wide "listing slab" per apartment (gallery | facts), closing contact band. Single dark look by design, matching the campaign art. */
+:root{
+  --night:#0c0d29;         /* page ground */
+  --panel:#15163a;         /* slab surface */
+  --panel-2:#1d1f4d;       /* raised chips, thumbs */
+  --line:rgba(190,196,255,.16);
+  --ink:#f2f3ff;           /* primary text */
+  --mute:#b3b7df;          /* secondary text */
+  --gold:#ffd400;          /* the price colour from the key visual */
+  --cyan:#43c6ff;
+  --violet:#8b5cff;
+  --magenta:#e03ac6;
+  --wa:#22c35e;
+  --f-display:"Montserrat","Helvetica Neue",Arial,sans-serif;
+  --f-body:"DM Sans","Segoe UI",Roboto,Arial,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--night);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    linear-gradient(115deg,transparent 18%,rgba(67,198,255,.13) 26%,transparent 36%),
+    linear-gradient(250deg,transparent 30%,rgba(139,92,255,.16) 42%,transparent 54%),
+    linear-gradient(160deg,transparent 58%,rgba(224,58,198,.12) 68%,transparent 80%),
+    var(--night);}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(12,13,41,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand img{width:40px;height:auto;display:block}
+.brand span{font-family:var(--f-display);font-weight:800;letter-spacing:.04em;font-size:.95rem}
+.brand small{display:block;font-family:var(--f-body);font-weight:500;letter-spacing:.12em;font-size:.68rem;color:var(--mute)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:999px;padding:12px 22px;font-weight:700;font-size:.98rem;text-decoration:none;border:1px solid transparent;cursor:pointer;font-family:var(--f-body);transition:transform .15s ease,background .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn-wa{background:var(--wa);color:#fff}
+.btn-gold{background:var(--gold);color:var(--night)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--cyan)}
+.btn svg{width:18px;height:18px;flex:none}
+.top .btn{padding:9px 16px;font-size:.88rem}
+
+/* hero */
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding-block:56px 40px}
+.eyebrow{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);font-weight:700}
+h1{font-family:var(--f-display);font-weight:900;line-height:.98;margin:.35em 0 .3em;font-size:clamp(2.6rem,6.2vw,4.9rem);letter-spacing:-.02em;text-wrap:balance}
+h1 .small{display:block;font-weight:600;font-size:.46em;letter-spacing:0;margin:.25em 0 .1em}
+h1 .gold{color:var(--gold);text-shadow:0 0 28px rgba(255,212,0,.28)}
+.lede{color:var(--mute);font-size:1.12rem;max-width:34em}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.ladder{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:30px;font-size:.92rem;color:var(--mute)}
+.ladder b{font-family:var(--f-display);color:var(--ink);font-variant-numeric:tabular-nums}
+.kv{position:relative;border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 30px 80px -20px rgba(139,92,255,.55),0 0 60px -10px rgba(67,198,255,.35)}
+.kv img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover}
+
+/* filters */
+.bar .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding-block:22px 6px}
+.bar h2{font-family:var(--f-display);font-weight:800;font-size:1.5rem;margin:0}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.filters button{font:600 .9rem var(--f-body);color:var(--mute);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer}
+.filters button[aria-pressed="true"]{color:var(--night);background:var(--cyan);border-color:var(--cyan)}
+
+/* listing slabs */
+.list .wrap{display:grid;gap:28px;padding-block:20px 56px}
+.slab{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);background:var(--panel);border:1px solid var(--line);border-radius:24px;overflow:hidden}
+.gal{position:relative;background:#07081c;min-width:0}
+.gal-main{position:relative;aspect-ratio:4/3;max-width:100%;overflow:hidden}
+.gal-main img{width:100%;height:100%;object-fit:cover;display:block}
+.gal-cap{position:absolute;left:0;right:0;bottom:0;padding:28px 16px 12px;background:linear-gradient(transparent,rgba(7,8,28,.85));font-size:.9rem;display:flex;justify-content:space-between;gap:12px}
+.gal-cap span:last-child{font-variant-numeric:tabular-nums;color:var(--mute);flex:none}
+.nav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(12,13,41,.6);color:#fff;display:grid;place-items:center;cursor:pointer}
+.nav.prev{left:12px}.nav.next{right:12px}
+.nav svg{width:20px;height:20px}
+.thumbs{display:flex;gap:6px;overflow-x:auto;padding:8px;scrollbar-width:thin}
+.thumbs button{flex:none;width:72px;height:54px;padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:var(--panel-2);opacity:.65}
+.thumbs button[aria-current="true"]{border-color:var(--gold);opacity:1}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+
+.info{padding:28px 30px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.zona{font-size:.78rem;letter-spacing:.14em;font-weight:700;color:var(--cyan)}
+.info h3{font-family:var(--f-display);font-weight:800;font-size:1.65rem;line-height:1.12;margin:0;text-wrap:balance}
+.price{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px}
+.price strong{font-family:var(--f-display);font-weight:900;color:var(--gold);font-size:2.6rem;line-height:1;font-variant-numeric:tabular-nums}
+.price span{color:var(--ink);font-weight:600}
+.price em{font-style:normal;color:var(--mute);font-size:.92rem;width:100%}
+.chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.chips li{background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:.88rem;font-weight:500}
+.hl{font-weight:700;color:var(--ink)}
+.hl::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:9px;vertical-align:middle;box-shadow:0 0 10px var(--gold)}
+.info p{margin:0;color:var(--mute);max-width:36em}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto;padding-top:6px}
+.ref{font-size:.8rem;color:var(--mute);font-variant-numeric:tabular-nums}
+
+/* contact */
+.contact{border-top:1px solid var(--line);background:linear-gradient(180deg,rgba(21,22,58,.6),rgba(12,13,41,0))}
+.contact .wrap{display:grid;grid-template-columns:1fr 1fr;gap:36px;padding-block:52px}
+.contact h2{font-family:var(--f-display);font-weight:800;font-size:clamp(1.6rem,3.4vw,2.3rem);margin:0 0 .4em;text-wrap:balance}
+.contact p{color:var(--mute);margin:0 0 20px;max-width:32em}
+.cards{display:grid;gap:10px}
+.cline{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;min-width:0}
+.cline div{min-width:0}
+.cline small{display:block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:700}
+.cline b,.cline a{font-weight:700;word-break:break-word;user-select:all}
+.copy{flex:none;font:600 .82rem var(--f-body);background:var(--panel-2);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer}
+footer .wrap{padding-block:22px 34px;color:var(--mute);font-size:.82rem;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px 20px;justify-content:space-between}
+
+@media (max-width:900px){
+  .hero .wrap{grid-template-columns:1fr;gap:30px;padding-block:34px 24px}
+  .kv{max-width:520px}
+  .slab{grid-template-columns:1fr}
+  .contact .wrap{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .info{padding:20px 18px}
+  .price strong{font-size:2.15rem}
+  .top .btn span{display:none}
+  .hero-cta .btn{flex:1 1 100%}
+  .actions .btn{flex:1 1 100%}
+  .kv{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio"><img src="logo_jmk.png" alt="Inmobiliaria JMK®"><span>JMK®<small>INMOBILIARIA</small></span></a>
+    <a class="btn btn-wa" href="https://wa.me/50660190789?text=Hola%2C%20me%20interesa%20la%20campa%C3%B1a%20de%20apartamentos%20por%20menos%20de%20%E2%82%A1500.000." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.98L2 22l5.15-1.5A9.92 9.92 0 1 0 12.04 2zm0 18.07a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.06.89.9-2.98-.2-.31a8.17 8.17 0 1 1 6.84 3.73zm4.5-6.12c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.56.12-.16.25-.64.8-.78.97-.14.16-.29.18-.54.06a6.7 6.7 0 0 1-3.32-2.9c-.25-.43.25-.4.72-1.33.08-.16.04-.3-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.41-.56-.42h-.47a.9.9 0 0 0-.66.31 2.76 2.76 0 0 0-.86 2.05 4.8 4.8 0 0 0 1 2.55 11 11 0 0 0 4.2 3.7c1.56.67 2.17.73 2.95.61.47-.07 1.46-.6 1.66-1.17.2-.58.2-1.07.15-1.17-.06-.11-.22-.17-.47-.29z"/></svg><span>WhatsApp</span></a>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Campaña de alquileres · Inmobiliaria JMK®</div>
+        <h1>Apartamentos <span class="small">por menos de</span><span class="gold">₡500.000</span></h1>
+        <p class="lede">Seis apartamentos listos para alquilar en Tibás, Barrio Otoya, Rohrmoser, Paso Ancho y Escazú. Galería completa de cada uno, precio claro y atención directa por WhatsApp.</p>
+        <div class="hero-cta">
+          <a class="btn btn-gold" href="#apartamentos">Ver los apartamentos</a>
+          <a class="btn btn-ghost" href="#contacto">Agendar una visita</a>
+        </div>
+        <div class="ladder" id="ladder"></div>
+      </div>
+      <div class="kv"><img src="campana.jpg" alt="Apartamentos por menos de ₡500.000 colones — Inmobiliaria JMK®"></div>
+    </div>
+  </section>
+
+  <section class="bar" id="apartamentos">
+    <div class="wrap">
+      <h2>Elegí tu apartamento</h2>
+      <div class="filters" role="group" aria-label="Filtrar apartamentos">
+        <button type="button" id="f-todos" data-f="todos" aria-pressed="true">Todos</button>
+        <button type="button" id="f-1" data-f="1" aria-pressed="false">1 habitación</button>
+        <button type="button" id="f-2" data-f="2" aria-pressed="false">2 habitaciones</button>
+        <button type="button" id="f-am" data-f="am" aria-pressed="false">Amueblados</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="list"><div class="wrap" id="list"></div></section>
+
+  <section class="contact" id="contacto">
+    <div class="wrap">
+      <div>
+        <h2>Agendá tu visita hoy mismo</h2>
+        <p>Escribinos con el apartamento que te interesa y te confirmamos disponibilidad, requisitos y horario de visita.</p>
+        <a class="btn btn-wa" href="https://wa.me/50660190789?text=Hola%2C%20quiero%20agendar%20una%20visita%20(campa%C3%B1a%20apartamentos%20por%20menos%20de%20%E2%82%A1500.000)." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.98L2 22l5.15-1.5A9.92 9.92 0 1 0 12.04 2zm0 18.07a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.06.89.9-2.98-.2-.31a8.17 8.17 0 1 1 6.84 3.73zm4.5-6.12c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.56.12-.16.25-.64.8-.78.97-.14.16-.29.18-.54.06a6.7 6.7 0 0 1-3.32-2.9c-.25-.43.25-.4.72-1.33.08-.16.04-.3-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.41-.56-.42h-.47a.9.9 0 0 0-.66.31 2.76 2.76 0 0 0-.86 2.05 4.8 4.8 0 0 0 1 2.55 11 11 0 0 0 4.2 3.7c1.56.67 2.17.73 2.95.61.47-.07 1.46-.6 1.66-1.17.2-.58.2-1.07.15-1.17-.06-.11-.22-.17-.47-.29z"/></svg> Escribir por WhatsApp</a>
+      </div>
+      <div class="cards">
+        <div class="cline"><div><small>Teléfono y WhatsApp</small><b id="tel">+506 6019-0789</b></div><button class="copy" type="button" data-copy="tel">Copiar</button></div>
+        <div class="cline"><div><small>Correo</small><b id="mail">info@realestatejmk.com</b></div><button class="copy" type="button" data-copy="mail">Copiar</button></div>
+        <div class="cline"><div><small>Sitio web</small><a href="https://www.inmobiliariajmk.com" target="_blank" rel="noopener">www.inmobiliariajmk.com</a></div></div>
+        <div class="cline"><div><small>Redes sociales</small><a href="https://linktr.ee/inmobiliariajmk" target="_blank" rel="noopener">linktr.ee/inmobiliariajmk</a></div></div>
+        <div class="cline"><div><small>Canal de WhatsApp</small><a href="https://whatsapp.com/channel/0029Vb5yLf2JJhzUstXwyl2Z" target="_blank" rel="noopener">Seguir el canal de JMK</a></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <span>Inmobiliaria JMK® · Servicios Inmobiliarios Real Estate JMK S.R.L. · Cédula jurídica 3-102-935319</span>
+  <span>Sabana Sur, Edificio Vistas del Parque, Piso 3, San José</span>
+</div></footer>
+
+<script>
+const APTS = [{"slug": "tibas", "zona": "CINCO ESQUINAS · TIBÁS", "titulo": "Apartamento de 2 habitaciones", "precio": "₡375.000", "deposito": "Depósito ₡350.000", "prop": "Propiedad #10426818", "specs": ["2 habitaciones", "1 baño", "1 parqueo", "Internet 300 Mb + cable"], "destacado": "Incluye internet 300 Mb y cable", "resumen": "Práctico y céntrico, cerca de Bambú Rivera, la Iglesia de Cinco Esquinas y ULACIT, a 1 km del centro. Cochera con portón eléctrico.", "url": "https://alquileresjmk-alt.github.io/Inmobiliaria-Inmobiliaria-jmk-dossiers/apartamento-tibas-2-habitaciones/", "fotos": [["fotos/tibas/01.jpg", "Sala y cocina con piso tipo madera en espiga"], ["fotos/tibas/02.jpg", "Sala con ventanal y luces LED empotradas"], ["fotos/tibas/03.jpg", "Vista general hacia habitaciones y cuarto de pilas"], ["fotos/tibas/04.jpg", "Cocina con mueble en madera y acceso a pasillo"], ["fotos/tibas/05.jpg", "Cocina con alacenas y ventana"], ["fotos/tibas/06.jpg", "Habitación con clóset de puertas corredizas"], ["fotos/tibas/07.jpg", "Habitación con clóset y repisas"], ["fotos/tibas/08.jpg", "Segunda habitación con ventana"], ["fotos/tibas/09.jpg", "Cuarto de pilas con conexión para lavadora"], ["fotos/tibas/10.jpg", "Cuarto de pilas con salida al patio de luz"], ["fotos/tibas/11.jpg", "Patio de luz con ventilación natural"], ["fotos/tibas/12.jpg", "Cochera con portón eléctrico y acceso"]], "lugar": "Tibás"}, {"slug": "otoya", "zona": "BARRIO OTOYA · SAN JOSÉ", "titulo": "Apartamento en edificio histórico", "precio": "₡400.000", "deposito": "Depósito ₡400.000", "prop": "Propiedad #10388690", "specs": ["1 dormitorio", "Primer piso", "Pisos de madera", "Patio y bodega"], "destacado": "Edificio histórico con patio propio", "resumen": "Detalles clásicos, pisos de madera y excelente luz natural en el céntrico Barrio Otoya. Incluye área de lavado, bodega y un hermoso patio.", "url": "https://alquileresjmk-alt.github.io/Inmobiliaria-Inmobiliaria-jmk-dossiers/apartamento-edificio-historico-barrio-otoya/", "fotos": [["fotos/otoya/01.jpg", "Edificio histórico en Barrio Otoya"], ["fotos/otoya/02.jpg", "Sala y comedor con ventana y acceso a la cocina"], ["fotos/otoya/03.jpg", "Sala con excelente iluminación natural"], ["fotos/otoya/04.jpg", "Ambiente con puertas francesas hacia el patio"], ["fotos/otoya/05.jpg", "Salida al patio con piso de mosaico"], ["fotos/otoya/06.jpg", "Dormitorio con acceso directo al baño"], ["fotos/otoya/07.jpg", "Dormitorio con ventanal hacia el patio"], ["fotos/otoya/08.jpg", "Ambiente amplio con ventana"], ["fotos/otoya/09.jpg", "Espacio amplio y luminoso"], ["fotos/otoya/10.jpg", "Baño con tina enchapada y lavamanos"], ["fotos/otoya/11.jpg", "Baño, otro ángulo"], ["fotos/otoya/12.jpg", "Cocina con sobre de granito y alacenas"], ["fotos/otoya/13.jpg", "Área de lavado con pila y repisas"], ["fotos/otoya/14.jpg", "Patio con bodega"]], "lugar": "Barrio Otoya"}, {"slug": "santa-catalina", "zona": "SANTA CATALINA · ROHRMOSER", "titulo": "Apartamento de 2 habitaciones", "precio": "₡400.000", "deposito": "Depósito ₡400.000", "prop": "Ref. JMK-STACATROH-001", "specs": ["2 habitaciones", "1 baño", "Parqueo techado", "Fibra 300 Mb incluida"], "destacado": "Internet de fibra 300 Mb incluido", "resumen": "Segundo piso al final del Boulevard de Rohrmoser, zona tranquila y bien conectada. Ideal para teletrabajo, con tragaluz y agua caliente.", "url": "https://alquileresjmk-alt.github.io/Inmobiliaria-Inmobiliaria-jmk-dossiers/apartamento-santa-catalina-rohrmoser/", "fotos": [["fotos/santa-catalina/01.jpg", "Sala-comedor y cocina"], ["fotos/santa-catalina/02.jpg", "Cocina en L con desayunador"], ["fotos/santa-catalina/03.jpg", "Sobre de granito y azulejo decorativo"], ["fotos/santa-catalina/04.jpg", "Cocina y puerta principal"], ["fotos/santa-catalina/05.jpg", "Sala, cocina y pasillo"], ["fotos/santa-catalina/06.jpg", "Sala amplia con divisor de madera"], ["fotos/santa-catalina/07.jpg", "Cocina con mueble superior"], ["fotos/santa-catalina/08.jpg", "Área de comedor"], ["fotos/santa-catalina/09.jpg", "Sala y área de lavandería"], ["fotos/santa-catalina/10.jpg", "Tragaluz con ventilación natural"], ["fotos/santa-catalina/11.jpg", "Pasillo hacia las habitaciones"], ["fotos/santa-catalina/12.jpg", "Habitación principal con clóset"], ["fotos/santa-catalina/13.jpg", "Habitación principal (cama King)"], ["fotos/santa-catalina/14.jpg", "Habitación secundaria (cama Queen)"], ["fotos/santa-catalina/15.jpg", "Habitación secundaria con vista al tragaluz"], ["fotos/santa-catalina/16.jpg", "Clóset con escritorio empotrado"], ["fotos/santa-catalina/17.jpg", "Baño completo con agua caliente"]], "lugar": "Rohrmoser"}, {"slug": "skyhouse", "zona": "SKYHOUSE · PASO ANCHO", "titulo": "Apartamento a estrenar en SkyHouse", "precio": "₡450.000", "deposito": "Depósito ₡450.000", "prop": "Propiedad #10388454", "specs": ["1 habitación", "1 baño", "45 m²", "+20 amenidades"], "destacado": "A estrenar, con vista a la piscina", "resumen": "Condominio moderno a minutos de Circunvalación: piscinas, gimnasio, coworking, Sky Lounge, game room y seguridad 24/7.", "url": "https://alquileresjmk-alt.github.io/Inmobiliaria-Inmobiliaria-jmk-dossiers/apartamento-skyhouse-paso-ancho-10388454/", "fotos": [["fotos/skyhouse/01.jpg", "Sala con balcón y vista a la piscina"], ["fotos/skyhouse/02.jpg", "Sala amplia con ventanal al balcón"], ["fotos/skyhouse/03.jpg", "Sala con abundante luz natural"], ["fotos/skyhouse/04.jpg", "Sala-comedor integrada"], ["fotos/skyhouse/05.jpg", "Cocina con gabinetes y acceso principal"], ["fotos/skyhouse/06.jpg", "Centro de lavado incluido"], ["fotos/skyhouse/07.jpg", "Habitación con walk-in closet"], ["fotos/skyhouse/08.jpg", "Walk-in closet con repisas"], ["fotos/skyhouse/09.jpg", "Habitación con ventana"], ["fotos/skyhouse/10.jpg", "Baño completo con ducha tipo lluvia"], ["fotos/skyhouse/11.jpg", "Torre SkyHouse y piscina"], ["fotos/skyhouse/12.jpg", "Piscina recreativa y carril de nado"], ["fotos/skyhouse/13.jpg", "Sky Lounge en azotea con fire pit"], ["fotos/skyhouse/14.jpg", "Área de co-cooking"], ["fotos/skyhouse/15.jpg", "Game Room con billar y mesa de cartas"], ["fotos/skyhouse/16.jpg", "Casa club"]], "lugar": "Paso Ancho"}, {"slug": "guachipelin-10473372", "zona": "GUACHIPELÍN NORTE · ESCAZÚ", "titulo": "Apartamento amueblado", "precio": "$1,100", "deposito": "Totalmente amueblado", "prop": "Propiedad #10473372", "specs": ["2 habitaciones", "2 baños", "1 parqueo", "Lavadora y secadora"], "destacado": "100% amueblado", "resumen": "Cómodo y funcional, con segunda habitación adaptable como oficina. Cocina con estufa, área de lavado con lavadora y secadora.", "url": "https://alquileresjmk-alt.github.io/Inmobiliaria-Inmobiliaria-jmk-dossiers/guachipelin-norte-apto-amueblado-10473372/", "fotos": [["fotos/guachipelin-10473372/01.jpg", "Sala y comedor"], ["fotos/guachipelin-10473372/02.jpg", "Sala y entrada principal"], ["fotos/guachipelin-10473372/03.jpg", "Cocina con estufa"], ["fotos/guachipelin-10473372/04.jpg", "Cocina, otra vista"], ["fotos/guachipelin-10473372/05.jpg", "Dormitorio principal"], ["fotos/guachipelin-10473372/06.jpg", "Clóset del dormitorio principal"], ["fotos/guachipelin-10473372/07.jpg", "Segunda habitación"], ["fotos/guachipelin-10473372/08.jpg", "Segunda habitación / oficina"], ["fotos/guachipelin-10473372/09.jpg", "Baño"], ["fotos/guachipelin-10473372/10.jpg", "Área de lavado con lavadora y secadora"]], "lugar": "Guachipelín"}, {"slug": "guachipelin-10474251", "zona": "GUACHIPELÍN NORTE · ESCAZÚ", "titulo": "Apartamento amueblado con balcón", "precio": "$1,100", "deposito": "Totalmente amueblado", "prop": "Propiedad #10474251", "specs": ["2 habitaciones", "2 baños", "1 parqueo", "Balcón"], "destacado": "100% amueblado, con balcón", "resumen": "Sala amplia con salida al balcón, segunda habitación adaptable como oficina y área de lavado con lavadora y secadora.", "url": "https://alquileresjmk-alt.github.io/Inmobiliaria-Inmobiliaria-jmk-dossiers/guachipelin-norte-apto-amueblado-10474251/", "fotos": [["fotos/guachipelin-10474251/01.jpg", "Sala con vista al balcón"], ["fotos/guachipelin-10474251/02.jpg", ""], ["fotos/guachipelin-10474251/03.jpg", ""], ["fotos/guachipelin-10474251/04.jpg", ""], ["fotos/guachipelin-10474251/05.jpg", ""], ["fotos/guachipelin-10474251/06.jpg", ""], ["fotos/guachipelin-10474251/07.jpg", ""], ["fotos/guachipelin-10474251/08.jpg", ""], ["fotos/guachipelin-10474251/09.jpg", ""]], "lugar": "Guachipelín"}];
+const WA = 'https://wa.me/50660190789?text=';
+const IC = {
+  prev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+  next:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>',
+  wa:`<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.98L2 22l5.15-1.5A9.92 9.92 0 1 0 12.04 2zm0 18.07a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.06.89.9-2.98-.2-.31a8.17 8.17 0 1 1 6.84 3.73zm4.5-6.12c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.56.12-.16.25-.64.8-.78.97-.14.16-.29.18-.54.06a6.7 6.7 0 0 1-3.32-2.9c-.25-.43.25-.4.72-1.33.08-.16.04-.3-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.41-.56-.42h-.47a.9.9 0 0 0-.66.31 2.76 2.76 0 0 0-.86 2.05 4.8 4.8 0 0 0 1 2.55 11 11 0 0 0 4.2 3.7c1.56.67 2.17.73 2.95.61.47-.07 1.46-.6 1.66-1.17.2-.58.2-1.07.15-1.17-.06-.11-.22-.17-.47-.29z"/></svg>`,
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>'
+};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const beds = a => parseInt(a.specs[0], 10);
+const amueblado = a => /amueblado/i.test(a.titulo + a.destacado);
+
+{ const seen = new Set();
+  document.getElementById('ladder').innerHTML = APTS.filter(a => { const k = a.lugar + a.precio; if (seen.has(k)) return false; seen.add(k); return true; })
+    .map(a => `<span>${esc(a.lugar)} <b>${esc(a.precio)}</b></span>`).join(''); }
+
+const list = document.getElementById('list');
+list.innerHTML = APTS.map((a, i) => {
+  const msg = encodeURIComponent(`Hola, me interesa el ${a.titulo.toLowerCase()} en ${a.zona.replace(' · ', ', ').toLowerCase().replace(/(^|\s)\S/g, m=>m.toUpperCase())} (${a.prop}) de la campaña de apartamentos por menos de ₡500.000.`);
+  return `<article class="slab" data-i="${i}" id="apto-${esc(a.slug)}">
+    <div class="gal">
+      <div class="gal-main">
+        <img src="${esc(a.fotos[0][0])}" alt="${esc(a.fotos[0][1])}" ${i>1?'loading="lazy"':''}>
+        <div class="gal-cap"><span class="cap">${esc(a.fotos[0][1])}</span><span class="cnt">1 / ${a.fotos.length}</span></div>
+        <button class="nav prev" type="button" aria-label="Foto anterior">${IC.prev}</button>
+        <button class="nav next" type="button" aria-label="Foto siguiente">${IC.next}</button>
+      </div>
+      <div class="thumbs">${a.fotos.map((f, k) =>
+        `<button type="button" data-k="${k}" aria-label="${esc(f[1])}" aria-current="${k===0}"><img src="${esc(f[0])}" alt="" loading="lazy"></button>`).join('')}</div>
+    </div>
+    <div class="info">
+      <div class="zona">${esc(a.zona)}</div>
+      <h3>${esc(a.titulo)}</h3>
+      <div class="price"><strong>${esc(a.precio)}</strong><span>/ mes</span><em>${esc(a.deposito)}</em></div>
+      <ul class="chips">${a.specs.map(s => `<li>${esc(s)}</li>`).join('')}</ul>
+      <div class="hl">${esc(a.destacado)}</div>
+      <p>${esc(a.resumen)}</p>
+      <div class="actions">
+        <a class="btn btn-wa" href="${WA + msg}" target="_blank" rel="noopener">${IC.wa} Consultar por WhatsApp</a>
+        <a class="btn btn-ghost" href="${esc(a.url)}" target="_blank" rel="noopener">${IC.doc} Ver ficha completa</a>
+      </div>
+      <div class="ref">${esc(a.prop)}</div>
+    </div>
+  </article>`;
+}).join('');
+
+list.querySelectorAll('.slab').forEach(slab => {
+  const a = APTS[+slab.dataset.i];
+  let k = 0;
+  const img = slab.querySelector('.gal-main img'), cap = slab.querySelector('.cap'), cnt = slab.querySelector('.cnt');
+  const thumbs = [...slab.querySelectorAll('.thumbs button')];
+  const show = n => {
+    k = (n + a.fotos.length) % a.fotos.length;
+    img.src = a.fotos[k][0]; img.alt = a.fotos[k][1];
+    cap.textContent = a.fotos[k][1]; cnt.textContent = `${k+1} / ${a.fotos.length}`;
+    thumbs.forEach((t, j) => t.setAttribute('aria-current', j === k));
+    const t = thumbs[k], strip = t.parentElement;
+    strip.scrollTo({left: t.offsetLeft - strip.clientWidth/2 + t.clientWidth/2, behavior:'smooth'});
+  };
+  slab.querySelector('.prev').onclick = () => show(k - 1);
+  slab.querySelector('.next').onclick = () => show(k + 1);
+  thumbs.forEach(t => t.onclick = () => show(+t.dataset.k));
+  let x0 = null;
+  const main = slab.querySelector('.gal-main');
+  main.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, {passive:true});
+  main.addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) show(k + (dx < 0 ? 1 : -1)); x0 = null; });
+});
+
+const fbtns = [...document.querySelectorAll('.filters button')];
+const applyFilter = f => {
+  fbtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.f === f));
+  list.querySelectorAll('.slab').forEach(s => {
+    const a = APTS[+s.dataset.i];
+    s.hidden = !(f === 'todos' || (f === 'am' ? amueblado(a) : beds(a) === +f));
+  });
+  try { localStorage.setItem('jmk-filtro', f); } catch (e) {}
+};
+fbtns.forEach(b => b.onclick = () => applyFilter(b.dataset.f));
+try { const f = localStorage.getItem('jmk-filtro'); if (f && fbtns.some(b => b.dataset.f === f)) applyFilter(f); } catch (e) {}
+
+document.querySelectorAll('.copy').forEach(b => b.onclick = () => {
+  const el = document.getElementById(b.dataset.copy);
+  const done = () => { b.textContent = 'Copiado'; setTimeout(() => b.textContent = 'Copiar', 1600); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Seleccionado'; setTimeout(() => b.textContent = 'Copiar', 1600); };
+  try { navigator.clipboard.writeText(el.textContent).then(done, fallback); } catch (e) { fallback(); }
+});
+</script>
+</body>
+</html>
