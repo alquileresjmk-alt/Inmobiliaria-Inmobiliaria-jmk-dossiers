@@ -1,0 +1,367 @@
+<meta charset="utf-8">
+<title>Cabañas y Fincas JMK</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Karla:ital,wght@0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: field-guide catalogue. A contour-map hero, a land-scale strip comparing every terrain,
+   then one "entry" per property; each property opens as its own view with location, specs and gallery. */
+:root{
+  --bg:#EEF0E8;          /* lichen paper */
+  --surface:#F8F9F4;
+  --ink:#1D2A21;         /* forest floor */
+  --muted:#5A6A5D;
+  --line:#D3D9CA;
+  --moss:#4C6A37;        /* accent: moss */
+  --moss-soft:#DCE5D0;
+  --bark:#7D5636;        /* prices, small warm detail */
+  --night:#17221B;       /* deep band */
+  --on-night:#E9EEE3;
+  --topo:rgba(76,106,55,.16);
+  --f-display:"Marcellus","Cormorant Garamond",Georgia,serif;
+  --f-body:"Karla","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111915;--surface:#18221C;--ink:#E4EADF;--muted:#9AA99B;--line:#2B3830;--moss:#9DBD7C;--moss-soft:#24321F;
+  --bark:#D6A878;--night:#0B110D;--on-night:#E4EADF;--topo:rgba(157,189,124,.13);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111915;--surface:#18221C;--ink:#E4EADF;--muted:#9AA99B;--line:#2B3830;--moss:#9DBD7C;--moss-soft:#24321F;
+  --bark:#D6A878;--night:#0B110D;--on-night:#E4EADF;--topo:rgba(157,189,124,.13);color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--f-body);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:inherit}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;text-wrap:balance;margin:0;letter-spacing:.005em}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.eyebrow{font:500 12px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--moss)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--moss);outline-offset:3px;border-radius:2px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand img{height:44px;width:auto}
+.brand span{font:500 11px/1.3 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.top nav{display:flex;gap:18px;align-items:center;font-size:14px}
+.top nav a{text-decoration:none;color:var(--muted)}
+.top nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--moss);color:var(--bg);text-decoration:none;font:700 14px/1 var(--f-body);padding:12px 18px;border-radius:999px;border:0;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+@media(max-width:640px){.top nav a.hide-s{display:none}.brand span{display:none}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:center;padding-block:64px 56px}
+.hero h1{font-size:clamp(40px,6vw,78px);line-height:1.02;margin:18px 0 22px}
+.hero h1 em{font-style:normal;color:var(--moss)}
+.hero .lede{font-size:18px;max-width:46ch;color:var(--muted)}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.mosaic{display:grid;grid-template-columns:1.3fr 1fr;grid-template-rows:200px 200px;gap:10px}
+.mosaic a{display:block;overflow:hidden;border-radius:4px;position:relative}
+.mosaic a:first-child{grid-row:span 2}
+.mosaic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s ease}
+.mosaic a:hover img{transform:scale(1.04)}
+.mosaic small{position:absolute;left:10px;bottom:10px;font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:#fff;background:rgba(15,22,17,.62);padding:6px 8px;border-radius:2px}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr;gap:32px;padding-block:40px}.mosaic{grid-template-rows:150px 150px}}
+
+/* scale strip */
+.scale{padding-block:56px 24px}
+.scale header{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:22px}
+.scale h2{font-size:clamp(26px,3vw,36px)}
+.scale header p{color:var(--muted);max-width:52ch;font-size:15px}
+.bars{display:grid;gap:10px}
+.bar{display:grid;grid-template-columns:minmax(0,200px) 1fr minmax(0,110px);gap:14px;align-items:center;text-decoration:none;font-size:14px}
+.bar b{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .track{height:14px;background:var(--moss-soft);border-radius:2px;position:relative;overflow:hidden}
+.bar .fill{position:absolute;inset:0 auto 0 0;background:var(--moss);border-radius:2px;transform-origin:left;animation:grow 1.1s cubic-bezier(.2,.7,.2,1) both}
+.bar span.v{text-align:right;color:var(--muted)}
+.bar:hover b{color:var(--moss)}
+@keyframes grow{from{transform:scaleX(.02)}to{transform:scaleX(1)}}
+@media(max-width:600px){.bar{grid-template-columns:1fr auto}.bar .track{grid-column:1/-1;grid-row:2}}
+
+/* catalogue */
+.cat{padding-block:40px 72px}
+.cat h2{font-size:clamp(26px,3vw,36px);margin-bottom:26px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 22px}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.card{text-decoration:none;display:flex;flex-direction:column;gap:12px}
+.card .ph{aspect-ratio:4/3;overflow:hidden;border-radius:4px;background:var(--moss-soft);max-width:100%}
+.card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s ease}
+.card:hover img{transform:scale(1.04)}
+.card h3{font-size:24px;line-height:1.15}
+.card .meta{display:flex;justify-content:space-between;gap:12px;align-items:baseline;border-top:1px solid var(--line);padding-top:10px;font-size:14px;color:var(--muted)}
+.card .price{font:500 15px/1 var(--f-mono);color:var(--bark)}
+.card p.k{font-size:15px;color:var(--muted)}
+
+/* contact band */
+.band{background:var(--night);color:var(--on-night)}
+.band .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;padding-block:56px;align-items:center}
+.band h2{font-size:clamp(28px,3.4vw,44px)}
+.band p{color:color-mix(in srgb,var(--on-night) 72%,transparent);margin-top:12px;max-width:48ch}
+.band ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:15px}
+.band li{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid color-mix(in srgb,var(--on-night) 16%,transparent);padding-bottom:10px}
+.band li span:first-child{font:500 11px/1.8 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;opacity:.7}
+.band li a{text-decoration:none;word-break:break-word;text-align:right}
+.band .btn{margin-top:22px}
+@media(max-width:760px){.band .wrap{grid-template-columns:1fr}}
+footer.f{padding-block:22px;font-size:13px;color:var(--muted)}
+footer.f .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* property view */
+.back{display:inline-flex;gap:8px;align-items:center;text-decoration:none;font-size:14px;color:var(--muted);margin-block:22px 14px}
+.back:hover{color:var(--ink)}
+.p-hero{position:relative;border-radius:4px;overflow:hidden;aspect-ratio:21/9;max-height:560px;width:100%;background:var(--moss-soft)}
+.p-hero img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:700px){.p-hero{aspect-ratio:4/3}}
+.p-head{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;padding-block:28px 22px;border-bottom:1px solid var(--line)}
+.p-head h1{font-size:clamp(34px,5vw,60px);line-height:1.05;margin-top:12px}
+.p-head .loc{color:var(--muted);margin-top:10px}
+.p-head .pr{text-align:right}
+.p-head .pr b{display:block;font:500 clamp(24px,3vw,34px)/1.1 var(--f-mono);color:var(--bark)}
+.p-head .pr span{font-size:13px;color:var(--muted)}
+@media(max-width:700px){.p-head{grid-template-columns:1fr}.p-head .pr{text-align:left}}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-bottom:1px solid var(--line)}
+.stats div{padding:18px 14px 18px 0}
+.stats div+div{border-left:1px solid var(--line);padding-left:16px}
+.stats b{display:block;font:500 20px/1.2 var(--f-mono);font-variant-numeric:tabular-nums}
+.stats span{font-size:13px;color:var(--muted)}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stats div+div{border-left:0;padding-left:0}.stats div{border-top:1px solid var(--line)}}
+.p-body{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:56px;padding-block:44px}
+.p-body .lede{font-family:var(--f-display);font-size:clamp(22px,2.4vw,28px);line-height:1.3;margin-bottom:18px}
+.p-body .txt{display:grid;gap:14px;color:var(--muted);max-width:62ch}
+.note{margin-top:20px;font-size:13px;color:var(--muted);border-left:2px solid var(--moss);padding:4px 0 4px 12px}
+.groups{display:grid;gap:26px}
+.groups h3{font:500 12px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--moss);margin-bottom:10px}
+.groups ul{list-style:none;margin:0;padding:0}
+.groups li{padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+@media(max-width:860px){.p-body{grid-template-columns:1fr;gap:32px}}
+.sec{padding-block:20px 48px}
+.sec>header{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.sec h2{font-size:clamp(26px,3vw,36px)}
+.sec header p{color:var(--muted);font-size:15px;max-width:56ch}
+.maps{display:grid;gap:18px}
+.maps.n2,.maps.n3,.maps.n4{grid-template-columns:repeat(2,minmax(0,1fr))}
+.maps.n3 figure:first-child,.maps.n1 figure{grid-column:1/-1}
+@media(max-width:700px){.maps.n2,.maps.n3,.maps.n4{grid-template-columns:1fr}}
+figure{margin:0}
+.maps figure button{display:block;width:100%;padding:0;border:1px solid var(--line);background:var(--surface);cursor:zoom-in;border-radius:4px;overflow:hidden}
+.maps img{display:block;width:100%;height:auto}
+figcaption{font-size:14px;color:var(--muted);margin-top:8px;display:flex;gap:10px}
+figcaption .mono{color:var(--moss);font-size:12px;padding-top:2px}
+.zone{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:22px}
+.zone p{color:var(--muted);font-size:15px}
+.zone b{display:block;font-family:var(--f-display);font-weight:400;font-size:22px;color:var(--ink);margin-bottom:4px}
+@media(max-width:600px){.zone{grid-template-columns:1fr}}
+.gal{columns:3 280px;column-gap:14px}
+.gal figure{break-inside:avoid;margin-bottom:14px}
+.gal button{display:block;width:100%;padding:0;border:0;background:var(--moss-soft);cursor:zoom-in;border-radius:4px;overflow:hidden}
+.gal img{display:block;width:100%;height:auto;transition:transform .7s ease}
+.gal button:hover img{transform:scale(1.03)}
+.gal figcaption{font-size:13px;margin-top:6px}
+.next{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding-block:8px 64px}
+.next a{display:flex;gap:14px;align-items:center;text-decoration:none;border:1px solid var(--line);border-radius:4px;padding:10px;background:var(--surface)}
+.next img{width:84px;height:64px;object-fit:cover;border-radius:2px;flex:none}
+.next small{display:block;font:500 11px/1.4 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.next b{font-family:var(--f-display);font-weight:400;font-size:19px}
+.next a:last-child{justify-content:flex-end;text-align:right}
+.next a:last-child img{order:2}
+@media(max-width:600px){.next{grid-template-columns:1fr}.next a:last-child{justify-content:flex-start;text-align:left}.next a:last-child img{order:0}}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:50;background:rgba(8,12,9,.94);display:grid;grid-template-rows:1fr auto;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lb[hidden]{display:none}
+.lb img{max-width:100%;max-height:100%;object-fit:contain;margin:auto;display:block;align-self:center;justify-self:center;min-height:0}
+.lb .stage{min-height:0;display:grid}
+.lb .bar2{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#E9EEE3;padding-top:12px;font-size:14px}
+.lb .bar2 span.mono{opacity:.7;font-size:12px}
+.lb button{background:rgba(233,238,227,.1);color:#E9EEE3;border:1px solid rgba(233,238,227,.25);border-radius:999px;width:44px;height:44px;font-size:18px;cursor:pointer;flex:none}
+.lb .cap{flex:1;text-align:center;min-width:0}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="#inicio" aria-label="Inicio"><img src="img/logo-jmk.png" alt="Inmobiliaria JMK"><span>Cabañas<br>y fincas</span></a>
+  <nav><a class="hide-s" href="#inicio" data-go="propiedades">Propiedades</a><a class="hide-s" href="#inicio" data-go="contacto">Contacto</a>
+  <a class="btn" href="https://wa.me/message/MMWMILUXRTBJM1" target="_blank" rel="noopener">WhatsApp</a></nav>
+</div></header>
+
+<main id="app"></main>
+
+<section class="band" id="contacto"><div class="wrap">
+  <div>
+    <span class="eyebrow" style="color:var(--on-night);opacity:.7">Visitas privadas</span>
+    <h2 style="margin-top:14px">Agende una visita a la propiedad que le interesa</h2>
+    <p>Coordinamos el recorrido con usted y le enviamos el dossier completo, planos y documentación por WhatsApp.</p>
+    <a class="btn" id="wa-band" href="https://wa.me/message/MMWMILUXRTBJM1" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+  </div>
+  <ul>
+    <li><span>Teléfono y WhatsApp</span><a href="https://wa.me/message/MMWMILUXRTBJM1" target="_blank" rel="noopener">+506 6019-0789</a></li>
+    <li><span>Correo</span><span>info@realestatejmk.com</span></li>
+    <li><span>Sitio web</span><a href="https://www.inmobiliariajmk.com" target="_blank" rel="noopener">www.inmobiliariajmk.com</a></li>
+    <li><span>Redes</span><a href="https://linktr.ee/inmobiliariajmk" target="_blank" rel="noopener">linktr.ee/inmobiliariajmk</a></li>
+    <li><span>Airbnb</span><a href="https://www.airbnb.co.cr/p/realestatejmk" target="_blank" rel="noopener">airbnb.co.cr/p/realestatejmk</a></li>
+  </ul>
+</div></section>
+<footer class="f"><div class="wrap"><span>Inmobiliaria JMK® · Servicios Inmobiliarios Real Estate JMK S.R.L.</span><span>Sabana Sur, San José, Costa Rica</span></div></footer>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Galería">
+  <div class="stage"><img id="lb-img" alt=""></div>
+  <div class="bar2"><button id="lb-prev" aria-label="Foto anterior">‹</button><div class="cap"><div id="lb-cap"></div><span class="mono" id="lb-n"></span></div><button id="lb-next" aria-label="Foto siguiente">›</button><button id="lb-x" aria-label="Cerrar">×</button></div>
+</div>
+
+<script>
+const DATA = [{"id": "tirol", "name": "Cabaña El Tirol", "kind": "Cabaña de montaña", "place": "El Tirol, San Rafael de Heredia", "province": "Heredia", "price": "$500,000", "currency": "USD", "ref": "", "m2": 1892, "stats": [["1,892 m²", "Terreno"], ["250 m²", "Construcción"], ["3 + 1", "Suites + servicio"], ["4 + ½", "Baños"], ["2", "Parqueos"]], "lede": "Un refugio de paz rodeado de naturaleza, a pasos del nacimiento del Río Segundo y con cataratas a distancia caminando.", "body": ["Esta cabaña combina maderas finas, caobilla, cedro y ciprés, con techos de shingles y espacios a doble altura que dan calidez y amplitud. El concepto abierto integra sala, comedor y cocina bajo grandes ventanales con excelente luz natural."], "groups": [["Primera planta", ["Sala, comedor y cocina en concepto abierto", "Medio baño de visitas", "3 habitaciones suite, cada una con baño privado, balcón y mezzanine", "Habitación principal con walk-in closet", "Habitación de servicio con baño completo"]], ["Segunda planta", ["Amplia sala de TV o espacio para oficina ejecutiva"]], ["Exteriores", ["Parqueo doble techado", "Bosque privado", "Terraza social con pérgola", "Leñero y zona de rancho"]]], "note": "Algunas fotografías interiores fueron editadas con decoración y mobiliario mediante staging virtual con fines ilustrativos. La construcción que se muestra es la real; se recomienda visitar la propiedad.", "maps": "El Tirol, San Rafael, Heredia, Costa Rica", "photos": [{"src": "img/tirol/01.jpg", "cap": "Vista de la cabaña al atardecer", "w": 1280, "h": 959}, {"src": "img/tirol/02.jpg", "cap": "Fachada principal", "w": 1280, "h": 959}, {"src": "img/tirol/03.jpg", "cap": "Vista lateral con torreón verde", "w": 1280, "h": 959}, {"src": "img/tirol/04.jpg", "cap": "Vista aérea de la propiedad", "w": 1280, "h": 959}, {"src": "img/tirol/05.jpg", "cap": "Vista aérea al atardecer", "w": 959, "h": 1280}, {"src": "img/tirol/06.jpg", "cap": "Entrada principal", "w": 1280, "h": 959}, {"src": "img/tirol/07.jpg", "cap": "Pasillo de entrada", "w": 1280, "h": 959}, {"src": "img/tirol/08.jpg", "cap": "Sala de estar", "w": 1280, "h": 959}, {"src": "img/tirol/09.jpg", "cap": "Comedor y sala integrados", "w": 1280, "h": 959}, {"src": "img/tirol/10.jpg", "cap": "Comedor y sala integrados", "w": 1280, "h": 959}, {"src": "img/tirol/11.jpg", "cap": "Área de comedor", "w": 1280, "h": 959}, {"src": "img/tirol/12.jpg", "cap": "Detalle de comedor y estar", "w": 1280, "h": 959}, {"src": "img/tirol/13.jpg", "cap": "Cocina equipada", "w": 1280, "h": 959}, {"src": "img/tirol/14.jpg", "cap": "Habitación principal", "w": 1280, "h": 959}, {"src": "img/tirol/15.jpg", "cap": "Habitación suite", "w": 1280, "h": 959}, {"src": "img/tirol/16.jpg", "cap": "Habitación con camas dobles", "w": 1280, "h": 959}, {"src": "img/tirol/17.jpg", "cap": "Baño", "w": 1280, "h": 959}, {"src": "img/tirol/18.jpg", "cap": "Baño", "w": 1280, "h": 959}, {"src": "img/tirol/19.jpg", "cap": "Terraza y área social exterior", "w": 1280, "h": 960}], "loc": []}, {"id": "conquista", "name": "Finca La Conquista", "kind": "Finca con cabaña y piscina", "place": "La Conquista, Sarapiquí, Heredia", "province": "Heredia", "price": "₡70.000.000", "currency": "Negociables", "ref": "JMK-CONQUISTA-001", "m2": 10000, "stats": [["1 ha", "Terreno"], ["100 m²", "Cabaña"], ["2", "Habitaciones"], ["1", "Baño"], ["Gavilán", "Madera"]], "lede": "Una hectárea con cabaña de madera, piscina, rancho, bosque, potrero y un río pequeño al fondo del terreno.", "body": ["Ideal para retiro, casa de recreo o un proyecto turístico. Está a 100 m de la escuela y a 1 km de la Ruta 4, con salida rápida hacia San José, Guápiles y Puerto Viejo.", "Existe la opción de ampliar el proyecto con una finca colindante de 800 m de frente a calle pública por ₡15.000.000 adicionales."], "groups": [["La cabaña", ["Construcción robusta en madera gavilán", "2 habitaciones y 1 baño", "Sala, comedor y cocina", "Amplia bodega", "Incluye menaje básico"]], ["Amenidades", ["Piscina mediana", "Rancho para actividades y eventos", "Bosque pequeño y loma", "Potrero", "Río pequeño al fondo"]], ["Negociación", ["Se recibe casa en Heredia como parte de pago", "Se puede financiar una parte", "Escritura, plano y libre de gravámenes", "Firma inmediata"]]], "note": "", "maps": "La Conquista, Sarapiquí, Heredia, Costa Rica", "photos": [{"src": "img/conquista/01.jpg", "cap": "Cabaña de madera gavilán", "w": 1280, "h": 960}, {"src": "img/conquista/02.jpg", "cap": "Piscina mediana", "w": 960, "h": 1280}, {"src": "img/conquista/03.jpg", "cap": "Rancho y terraza techada", "w": 1280, "h": 960}, {"src": "img/conquista/04.jpg", "cap": "Corredor y jardín de entrada", "w": 1280, "h": 883}, {"src": "img/conquista/05.jpg", "cap": "Corredor en madera con vista al jardín", "w": 1280, "h": 960}, {"src": "img/conquista/06.jpg", "cap": "Comedor", "w": 1280, "h": 960}, {"src": "img/conquista/07.jpg", "cap": "Cocina", "w": 1280, "h": 960}, {"src": "img/conquista/08.jpg", "cap": "Habitación principal", "w": 1280, "h": 960}, {"src": "img/conquista/09.jpg", "cap": "Segunda habitación", "w": 1280, "h": 960}, {"src": "img/conquista/10.jpg", "cap": "Jardín tropical y piscina", "w": 1284, "h": 960}, {"src": "img/conquista/11.jpg", "cap": "Jardines y rancho", "w": 1284, "h": 913}, {"src": "img/conquista/12.jpg", "cap": "Sendero bajo los árboles", "w": 1284, "h": 789}, {"src": "img/conquista/13.jpg", "cap": "Bosque propio", "w": 1280, "h": 960}, {"src": "img/conquista/14.jpg", "cap": "Vegetación tropical", "w": 1280, "h": 960}, {"src": "img/conquista/15.jpg", "cap": "Vista del terreno y potrero", "w": 1284, "h": 673}], "loc": []}, {"id": "orotina", "name": "Finca Lote 110", "kind": "Finca con cabaña rústica", "place": "Quintas Casa de Campo, La Coyotera, Orotina", "province": "Alajuela", "price": "$250,000", "currency": "USD", "ref": "JMK-OROTINA-110", "m2": 9136, "stats": [["9,136 m²", "Terreno"], ["1", "Dormitorio"], ["1", "Baño"], ["Propio", "Pozo registrado"], ["4 km", "A Orotina centro"]], "lede": "Finca con cabaña de madera, pozo de agua propio y vistas a la montaña, a solo 4 km del centro de Orotina.", "body": ["La cabaña tiene cocina, comedor, dormitorio, baño con ducha en piedra y terraza techada: un punto de partida para su futura casa de campo, con amplio espacio para ampliar. Un rancho de paja funciona como cochera.", "El terreno es mayormente plano, ideal para piscina o nuevas áreas, con árboles frutales, teca y árboles sabaneros."], "groups": [["La propiedad", ["Cabaña rústica en madera", "Terraza techada", "Rancho de paja como cochera", "Servicios públicos completos", "Pozo de agua propio registrado"]], ["Ideal para", ["Casa de campo o vivienda permanente", "Proyecto turístico o eco-lodge", "Inversión de retiro en Costa Rica", "Vida sostenible al aire libre"]]], "note": "", "maps": "Orotina, Alajuela, Costa Rica", "photos": [{"src": "img/orotina/01.jpg", "cap": "Fachada principal", "w": 1400, "h": 786}, {"src": "img/orotina/02.jpg", "cap": "Cabaña rodeada de árboles frutales", "w": 1400, "h": 788}, {"src": "img/orotina/03.jpg", "cap": "Terraza techada en madera", "w": 1400, "h": 785}, {"src": "img/orotina/04.jpg", "cap": "Vista a la montaña desde el comedor", "w": 1400, "h": 785}, {"src": "img/orotina/05.jpg", "cap": "Vista a las montañas desde la terraza", "w": 1400, "h": 785}, {"src": "img/orotina/06.jpg", "cap": "Cocina en madera con vista", "w": 1400, "h": 787}, {"src": "img/orotina/07.jpg", "cap": "Comedor y salida a la terraza", "w": 1400, "h": 785}, {"src": "img/orotina/08.jpg", "cap": "Dormitorio con dos camas", "w": 1400, "h": 786}, {"src": "img/orotina/09.jpg", "cap": "Baño con ducha en piedra", "w": 785, "h": 1400}, {"src": "img/orotina/10.jpg", "cap": "Baño revestido en madera", "w": 785, "h": 1400}, {"src": "img/orotina/11.jpg", "cap": "Acceso y rancho de paja", "w": 1400, "h": 788}, {"src": "img/orotina/12.jpg", "cap": "Rancho de paja como cochera", "w": 1400, "h": 788}, {"src": "img/orotina/13.jpg", "cap": "Vista aérea de la cabaña", "w": 1400, "h": 788}, {"src": "img/orotina/14.jpg", "cap": "Vista aérea del terreno plano", "w": 1400, "h": 788}, {"src": "img/orotina/15.jpg", "cap": "Flores del jardín", "w": 1400, "h": 785}], "loc": [{"src": "img/orotina/mapa-1.jpg", "cap": "Condominio Quintas Casa de Campo sobre imagen satelital", "w": 1600, "h": 819}, {"src": "img/orotina/mapa-2.jpg", "cap": "Plano del condominio con el Lote 110 señalado", "w": 1600, "h": 1262}, {"src": "img/orotina/mapa-3.jpg", "cap": "Ubicación del condominio respecto a Orotina centro", "w": 1600, "h": 822}]}, {"id": "cascajal", "name": "Casa en Cascajal", "kind": "Casa en una hectárea", "place": "Cascajal, Vázquez de Coronado, San José", "province": "San José", "price": "₡125,000,000", "currency": "Colones", "ref": "JMK-CASCOR-001", "m2": 10000, "stats": [["10,000 m²", "Terreno"], ["3", "Niveles"], ["2", "Dormitorios"], ["2", "Baños"], ["2", "Balcones"]], "lede": "Una hectárea con casa de tres niveles y los mejores atardeceres sobre San José desde dos balcones privados.", "body": ["El equilibrio entre naturaleza, espacio y vista a la ciudad. La casa aprovecha la topografía del terreno y se entrega recién pintada, lista para habitar."], "groups": [["La casa", ["Casa de 3 niveles", "2 dormitorios amplios", "2 baños completos", "Sala de doble altura con estufa de leña", "Recién renovada, con pintura nueva"]], ["El terreno", ["1 hectárea (10,000 m²)", "2 balcones con vista a San José", "Espacio para huertas o proyectos", "Bosque y vistas a la montaña"]]], "note": "", "maps": "Cascajal, Vázquez de Coronado, San José, Costa Rica", "photos": [{"src": "img/cascajal/01.jpg", "cap": "Atardecer desde el balcón", "w": 1400, "h": 1050}, {"src": "img/cascajal/02.jpg", "cap": "Fachada de la casa", "w": 1400, "h": 1050}, {"src": "img/cascajal/03.jpg", "cap": "Vista panorámica a San José", "w": 1400, "h": 1050}, {"src": "img/cascajal/04.jpg", "cap": "Atardecer sobre el Valle Central", "w": 1400, "h": 1050}, {"src": "img/cascajal/05.jpg", "cap": "Sala de doble altura con escalera", "w": 1400, "h": 1050}, {"src": "img/cascajal/06.jpg", "cap": "Sala y acceso a la cocina", "w": 1400, "h": 1050}, {"src": "img/cascajal/07.jpg", "cap": "Doble altura con muro de madera", "w": 1050, "h": 1400}, {"src": "img/cascajal/08.jpg", "cap": "Cocina con salida al balcón", "w": 1400, "h": 1050}, {"src": "img/cascajal/09.jpg", "cap": "Cocina y acceso principal", "w": 1400, "h": 1050}, {"src": "img/cascajal/10.jpg", "cap": "Sala con estufa de leña", "w": 1400, "h": 1050}, {"src": "img/cascajal/11.jpg", "cap": "Mezanine con vista a la sala", "w": 1400, "h": 1050}, {"src": "img/cascajal/12.jpg", "cap": "Nivel superior con ventanal", "w": 1400, "h": 1050}, {"src": "img/cascajal/13.jpg", "cap": "Baño completo", "w": 1400, "h": 1050}, {"src": "img/cascajal/14.jpg", "cap": "Balcón con vista a la montaña", "w": 1400, "h": 1050}, {"src": "img/cascajal/15.jpg", "cap": "Corredor techado con vista", "w": 1400, "h": 1050}, {"src": "img/cascajal/16.jpg", "cap": "Vista desde el balcón", "w": 1400, "h": 1050}, {"src": "img/cascajal/17.jpg", "cap": "Vista al bosque", "w": 1400, "h": 1050}, {"src": "img/cascajal/18.jpg", "cap": "Entrada y vista a las montañas", "w": 1400, "h": 1050}], "loc": [{"src": "img/cascajal/mapa-1.jpg", "cap": "Terreno de 1 hectárea delimitado sobre vista aérea", "w": 1599, "h": 899}]}, {"id": "turrucares", "name": "Casa de Campo Turrúcares", "kind": "Casa principal + apartamento", "place": "Turrúcares, Alajuela", "province": "Alajuela", "price": "₡400.000.000", "currency": "Colones", "ref": "JMK-TURRU-001", "m2": 2064, "stats": [["2,064 m²", "Terreno"], ["325 m²", "Construcción"], ["4", "Dormitorios"], ["2", "Edificaciones"], ["Jacuzzi", "Suite principal"]], "lede": "Casa principal de 225 m² y apartamento independiente de 100 m² en un terreno arbolado de clima privilegiado.", "body": ["El lugar ideal para vivir, trabajar desde casa y recibir invitados, con seguridad completa y espacios exteriores para actividades."], "groups": [["Casa principal · 225 m²", ["Dormitorio principal de 30 m² con A/C y jacuzzi", "2 dormitorios con balcón", "Oficina independiente y sala de TV", "Cocina equipada y área de lavado", "Amplia terraza"]], ["Apartamento · 100 m²", ["Dormitorio con clóset", "Baño amplio", "Área de lavado", "Terraza privada"]], ["Seguridad y extras", ["Cerca y portón eléctricos", "Sensores y cámaras", "Bodega, perrera y ranchito", "Planta de tratamiento", "Supresión de picos"]]], "note": "", "maps": "Turrúcares, Alajuela, Costa Rica", "photos": [{"src": "img/turrucares/01.jpg", "cap": "Fachada principal", "w": 1400, "h": 784}, {"src": "img/turrucares/02.jpg", "cap": "Acceso entre jardines", "w": 1400, "h": 1050}, {"src": "img/turrucares/03.jpg", "cap": "Terraza techada con comedor", "w": 1400, "h": 1050}, {"src": "img/turrucares/04.jpg", "cap": "Terraza social con área de ejercicio", "w": 1400, "h": 1050}, {"src": "img/turrucares/05.jpg", "cap": "Jardín y casa", "w": 1400, "h": 1050}, {"src": "img/turrucares/06.jpg", "cap": "Terreno arbolado", "w": 1400, "h": 1050}, {"src": "img/turrucares/07.jpg", "cap": "Dormitorio principal", "w": 1400, "h": 1050}, {"src": "img/turrucares/08.jpg", "cap": "Dormitorio con balcón", "w": 1400, "h": 1050}, {"src": "img/turrucares/09.jpg", "cap": "Vista desde el balcón", "w": 1400, "h": 1050}, {"src": "img/turrucares/10.jpg", "cap": "Dormitorio con clóset", "w": 1400, "h": 1050}, {"src": "img/turrucares/11.jpg", "cap": "Dormitorio con área de estudio", "w": 1400, "h": 1050}, {"src": "img/turrucares/12.jpg", "cap": "Cocina y comedor", "w": 1400, "h": 1050}, {"src": "img/turrucares/13.jpg", "cap": "Cocina equipada", "w": 1400, "h": 1050}, {"src": "img/turrucares/14.jpg", "cap": "Baño", "w": 1400, "h": 1050}, {"src": "img/turrucares/15.jpg", "cap": "Baño con ducha", "w": 1400, "h": 1050}, {"src": "img/turrucares/16.jpg", "cap": "Baño", "w": 1400, "h": 1050}], "loc": []}, {"id": "sanmateo", "name": "Terreno San Mateo", "kind": "4 hectáreas para desarrollo", "place": "Ruta Nacional 3, San Mateo, Alajuela", "province": "Alajuela", "price": "$4,480,000", "currency": "USD · $112/m²", "ref": "JMK-SANMATEO-001", "m2": 40000, "stats": [["40,000 m²", "Terreno"], ["$112", "Por m²"], ["Residencial", "Uso de suelo"], ["90%", "Avance de permisos"], ["23", "Lotes conceptuales"]], "lede": "Cuatro hectáreas con frente directo a la Ruta Nacional 3, uso de suelo residencial y documentación completa.", "body": ["Ideal para un desarrollo residencial boutique o un complejo de quintas. El concepto Hacienda La Maravilla propone 23 lotes con acceso controlado, vía interna, parque y juegos infantiles.", "San Mateo combina la frescura de los Montes del Aguacate con la cercanía al Pacífico: Orotina a 10 min y las playas del Pacífico Central a 40 min."], "groups": [["Listo para construir", ["Frente a Ruta Nacional 3 (Carretera al Aguacate)", "Carta de disponibilidad de agua aprobada", "Curvas de nivel completas", "Estudios de permeabilidad y alineamientos", "Plano catastrado 2-18918-2023"]], ["Permisos en avance", ["Municipalidad de San Mateo", "AyA, MOPT e INVU", "Estudios de suelos", "Vialidad, ingreso y seguridad"]]], "note": "Las imágenes de interiores y el plan maestro son conceptos de referencia.", "maps": "San Mateo, Alajuela, Costa Rica", "photos": [{"src": "img/sanmateo/01.jpg", "cap": "Ubicación respecto al centro de San Mateo", "w": 1400, "h": 788}, {"src": "img/sanmateo/02.jpg", "cap": "Frente sobre Ruta Nacional 3", "w": 1400, "h": 473}, {"src": "img/sanmateo/03.jpg", "cap": "Ruta Nacional 3, acceso pavimentado", "w": 1400, "h": 478}, {"src": "img/sanmateo/04.jpg", "cap": "Entorno sobre Ruta Nacional 3", "w": 1400, "h": 384}, {"src": "img/sanmateo/05.jpg", "cap": "Vista aérea del sector y río Machuca", "w": 1400, "h": 761}, {"src": "img/sanmateo/06.jpg", "cap": "Vista aérea del entorno", "w": 1400, "h": 619}, {"src": "img/sanmateo/07.jpg", "cap": "Concepto Hacienda La Maravilla", "w": 1400, "h": 934}, {"src": "img/sanmateo/08.jpg", "cap": "Concepto residencial: sala y cocina", "w": 1046, "h": 1400}, {"src": "img/sanmateo/09.jpg", "cap": "Concepto residencial: sala y comedor", "w": 1046, "h": 1400}, {"src": "img/sanmateo/10.jpg", "cap": "Concepto residencial: dormitorio", "w": 1046, "h": 1400}, {"src": "img/sanmateo/11.jpg", "cap": "Concepto residencial: medio baño", "w": 1005, "h": 1400}, {"src": "img/sanmateo/12.jpg", "cap": "Montes del Aguacate", "w": 770, "h": 386}, {"src": "img/sanmateo/13.jpg", "cap": "Vista aérea de San Mateo", "w": 686, "h": 386}, {"src": "img/sanmateo/14.jpg", "cap": "Parque central de San Mateo", "w": 671, "h": 386}, {"src": "img/sanmateo/15.jpg", "cap": "Iglesia de San Mateo", "w": 1400, "h": 1050}], "loc": [{"src": "img/sanmateo/mapa-1.jpg", "cap": "Terreno delimitado según plano 2-18918-2023 · 40,000 m²", "w": 999, "h": 892}, {"src": "img/sanmateo/mapa-2.jpg", "cap": "Implantación conceptual sobre imagen satelital", "w": 1600, "h": 1429}, {"src": "img/sanmateo/mapa-3.jpg", "cap": "Ubicación del terreno respecto al centro de San Mateo", "w": 1600, "h": 733}, {"src": "img/sanmateo/mapa-4.jpg", "cap": "Plano catastrado 2-18918-2023", "w": 1101, "h": 1468}]}];
+const WA = "https://wa.me/message/MMWMILUXRTBJM1";
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = n => n.toLocaleString("en-US");
+const app = document.getElementById("app");
+
+function ha(m2){ return (m2/10000).toLocaleString("es-CR",{maximumFractionDigits:2}) + " ha"; }
+
+function home(){
+  const byArea = [...DATA].sort((a,b)=>b.m2-a.m2);
+  const max = byArea[0].m2;
+  const pick = id => DATA.find(p=>p.id===id);
+  const mos = [["tirol",4],["cascajal",0],["conquista",1]].map(([id,i])=>{const p=pick(id);return `<a href="#${p.id}"><img src="${p.photos[i].src}" alt="${esc(p.photos[i].cap)}"><small>${esc(p.name)}</small></a>`}).join("");
+  app.innerHTML = `
+  <section class="hero"><canvas id="topo" aria-hidden="true"></canvas><div class="wrap">
+    <div>
+      <span class="eyebrow">Inmobiliaria JMK · ${DATA.length} propiedades en venta</span>
+      <h1>Cabañas y fincas para vivir <em>entre árboles</em></h1>
+      <p class="lede">Refugios de montaña, fincas con bosque propio y terrenos con vista al Valle Central, de Sarapiquí a San Mateo. Cada propiedad con su ubicación sobre imagen satelital, planos y galería completa.</p>
+      <div class="cta"><a class="btn" href="#inicio" data-go="propiedades">Ver propiedades</a><a class="btn ghost" href="https://wa.me/message/MMWMILUXRTBJM1" target="_blank" rel="noopener">+506 6019-0789</a></div>
+    </div>
+    <div class="mosaic">${mos}</div>
+  </div></section>
+
+  <section class="scale wrap">
+    <header><div><span class="eyebrow">Escala del terreno</span><h2 style="margin-top:10px">Cuánta tierra trae cada propiedad</h2></div>
+    <p>Área de cada terreno en metros cuadrados, a la misma escala. Una hectárea equivale a 10,000 m².</p></header>
+    <div class="bars">${byArea.map((p,i)=>`<a class="bar" href="#${p.id}"><b>${esc(p.name)}</b><span class="track"><span class="fill" style="width:${(p.m2/max*100).toFixed(2)}%;animation-delay:${i*90}ms"></span></span><span class="v mono">${fmt(p.m2)} m²</span></a>`).join("")}</div>
+  </section>
+
+  <section class="cat wrap" id="propiedades">
+    <h2>Propiedades</h2>
+    <div class="grid">${DATA.map(p=>`
+      <a class="card" href="#${p.id}">
+        <div class="ph"><img src="${p.photos[0].src}" alt="${esc(p.photos[0].cap)}" loading="lazy"></div>
+        <span class="eyebrow">${esc(p.kind)} · ${esc(p.province)}</span>
+        <h3>${esc(p.name)}</h3>
+        <p class="k">${esc(p.lede)}</p>
+        <div class="meta"><span class="mono">${fmt(p.m2)} m² · ${ha(p.m2)}</span><span class="price">${esc(p.price)}</span></div>
+      </a>`).join("")}</div>
+  </section>`;
+  drawTopo();
+  setWA("Hola, me interesan las cabañas y fincas de Inmobiliaria JMK");
+}
+
+function prop(p){
+  const i = DATA.indexOf(p), prev = DATA[(i-1+DATA.length)%DATA.length], next = DATA[(i+1)%DATA.length];
+  const loc = p.loc.length ? `
+    <header><div><span class="eyebrow">Ubicación</span><h2 style="margin-top:10px">El terreno sobre imagen satelital</h2></div>
+    <p>${esc(p.place)}. Las imágenes muestran el límite de la propiedad según el plano.</p></header>
+    <div class="maps n${p.loc.length}">${p.loc.map((m,k)=>`<figure><button data-set="loc" data-i="${k}" aria-label="Ampliar ${esc(m.cap)}"><img src="${m.src}" alt="${esc(m.cap)}" loading="lazy" width="${m.w}" height="${m.h}"></button><figcaption><span class="mono">${String(k+1).padStart(2,"0")}</span><span>${esc(m.cap)}</span></figcaption></figure>`).join("")}</div>` : `
+    <header><div><span class="eyebrow">Ubicación</span><h2 style="margin-top:10px">Dónde está</h2></div></header>
+    <div class="zone"><div><b>${esc(p.place)}</b><p>Le compartimos la ubicación exacta y el plano catastrado al coordinar la visita.</p></div>
+    <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.maps)}" target="_blank" rel="noopener">Ver la zona en Google Maps</a></div>`;
+  app.innerHTML = `
+  <div class="wrap">
+    <a class="back" href="#inicio">← Todas las propiedades</a>
+    <div class="p-hero"><img src="${p.photos[0].src}" alt="${esc(p.photos[0].cap)}"></div>
+    <div class="p-head">
+      <div><span class="eyebrow">${esc(p.kind)}${p.ref?` · <span class="mono">${esc(p.ref)}</span>`:""}</span>
+      <h1>${esc(p.name)}</h1><p class="loc">${esc(p.place)}</p></div>
+      <div class="pr"><b>${esc(p.price)}</b><span>${esc(p.currency)}</span></div>
+    </div>
+    <div class="stats">${p.stats.map(([v,l])=>`<div><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("")}</div>
+    <div class="p-body">
+      <div><p class="lede">${esc(p.lede)}</p><div class="txt">${p.body.map(t=>`<p>${esc(t)}</p>`).join("")}</div>
+      ${p.note?`<p class="note">${esc(p.note)}</p>`:""}
+      <div style="margin-top:26px;display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="${WA}" target="_blank" rel="noopener">Consultar por WhatsApp</a><a class="btn ghost" href="#${p.id}" data-go="galeria">Ver ${p.photos.length} fotos</a></div></div>
+      <div class="groups">${p.groups.map(([h,items])=>`<div><h3>${esc(h)}</h3><ul>${items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`).join("")}</div>
+    </div>
+    <section class="sec">${loc}</section>
+    <section class="sec" id="galeria">
+      <header><div><span class="eyebrow">Galería · ${p.photos.length} fotos</span><h2 style="margin-top:10px">Recorrido fotográfico</h2></div><p>Toque una foto para verla en grande.</p></header>
+      <div class="gal">${p.photos.map((f,k)=>`<figure><button data-set="photos" data-i="${k}" aria-label="Ampliar ${esc(f.cap)}"><img src="${f.src}" alt="${esc(f.cap)}" loading="lazy" width="${f.w}" height="${f.h}"></button><figcaption>${esc(f.cap)}</figcaption></figure>`).join("")}</div>
+    </section>
+    <nav class="next" aria-label="Otras propiedades">
+      <a href="#${prev.id}"><img src="${prev.photos[0].src}" alt=""><span><small>Anterior</small><b>${esc(prev.name)}</b></span></a>
+      <a href="#${next.id}"><img src="${next.photos[0].src}" alt=""><span><small>Siguiente</small><b>${esc(next.name)}</b></span></a>
+    </nav>
+  </div>`;
+  app.querySelectorAll("[data-set]").forEach(b=>b.addEventListener("click",()=>openLB(p[b.dataset.set],+b.dataset.i)));
+  setWA(`Hola, me interesa ${p.name}${p.ref?" (Ref. "+p.ref+")":""}`);
+}
+
+function setWA(t){ document.getElementById("wa-band").href = WA; }
+
+function route(){
+  const id = location.hash.replace("#","");
+  const p = DATA.find(x=>x.id===id);
+  if(p){ prop(p); document.title = p.name + " · Cabañas y Fincas JMK"; }
+  else { home(); document.title = "Cabañas y Fincas JMK"; }
+  window.scrollTo(0,0);
+}
+document.addEventListener("click",e=>{
+  const a = e.target.closest("[data-go]"); if(!a) return;
+  const target = a.dataset.go;
+  if(target==="galeria"){ e.preventDefault(); document.getElementById("galeria")?.scrollIntoView({behavior:"smooth"}); return; }
+  e.preventDefault();
+  const go = ()=>document.getElementById(target)?.scrollIntoView({behavior:"smooth"});
+  if(target==="propiedades" && !document.getElementById("propiedades")){ location.hash="inicio"; setTimeout(go,60); } else go();
+});
+window.addEventListener("hashchange",route);
+
+/* lightbox */
+const lb=document.getElementById("lb"), lbImg=document.getElementById("lb-img"), lbCap=document.getElementById("lb-cap"), lbN=document.getElementById("lb-n");
+let set=[], at=0, lastFocus=null;
+function show(){ const f=set[at]; lbImg.src=f.src; lbImg.alt=f.cap; lbCap.textContent=f.cap; lbN.textContent=`${at+1} / ${set.length}`; }
+function openLB(s,i){ set=s; at=i; lastFocus=document.activeElement; show(); lb.hidden=false; document.body.style.overflow="hidden"; document.getElementById("lb-x").focus(); }
+function closeLB(){ lb.hidden=true; document.body.style.overflow=""; lastFocus?.focus(); }
+const step=d=>{ at=(at+d+set.length)%set.length; show(); };
+document.getElementById("lb-prev").onclick=()=>step(-1);
+document.getElementById("lb-next").onclick=()=>step(1);
+document.getElementById("lb-x").onclick=closeLB;
+lb.addEventListener("click",e=>{ if(e.target===lb||e.target.classList.contains("stage")) closeLB(); });
+document.addEventListener("keydown",e=>{ if(lb.hidden) return; if(e.key==="Escape") closeLB(); if(e.key==="ArrowRight") step(1); if(e.key==="ArrowLeft") step(-1); });
+let tx=null; lb.addEventListener("touchstart",e=>tx=e.touches[0].clientX,{passive:true});
+lb.addEventListener("touchend",e=>{ if(tx===null) return; const dx=e.changedTouches[0].clientX-tx; if(Math.abs(dx)>40) step(dx<0?1:-1); tx=null; });
+
+/* contour lines: a quiet topographic map behind the hero */
+function drawTopo(){
+  const c=document.getElementById("topo"); if(!c) return;
+  const r=c.getBoundingClientRect(), dpr=Math.min(2,window.devicePixelRatio||1);
+  c.width=r.width*dpr; c.height=r.height*dpr;
+  const x=c.getContext("2d"); x.scale(dpr,dpr);
+  x.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue("--topo").trim()||"rgba(76,106,55,.16)";
+  x.lineWidth=1;
+  const W=r.width,H=r.height, peaks=[[W*.78,H*.35,1],[W*.18,H*.9,.8],[W*.55,H*1.1,.6]];
+  const f=(px,py)=>peaks.reduce((s,[a,b,w])=>s+w*Math.exp(-((px-a)**2+(py-b)**2)/(2*(Math.min(W,900)*.32)**2)),0)+0.06*Math.sin(px/90)*Math.cos(py/70);
+  const step=8, cols=Math.ceil(W/step)+1, rows=Math.ceil(H/step)+1, g=[];
+  for(let j=0;j<rows;j++){g[j]=[];for(let i=0;i<cols;i++)g[j][i]=f(i*step,j*step);}
+  for(let lv=0.08;lv<1.2;lv+=0.065){
+    x.beginPath();
+    for(let j=0;j<rows-1;j++)for(let i=0;i<cols-1;i++){
+      const a=g[j][i],b=g[j][i+1],cc=g[j+1][i+1],d=g[j+1][i], pts=[];
+      const e=(v1,v2,x1,y1,x2,y2)=>{ if((v1<lv)!==(v2<lv)){const t=(lv-v1)/(v2-v1);pts.push([x1+(x2-x1)*t,y1+(y2-y1)*t]);} };
+      const X=i*step,Y=j*step;
+      e(a,b,X,Y,X+step,Y); e(b,cc,X+step,Y,X+step,Y+step); e(cc,d,X+step,Y+step,X,Y+step); e(d,a,X,Y+step,X,Y);
+      if(pts.length>=2){x.moveTo(pts[0][0],pts[0][1]);x.lineTo(pts[1][0],pts[1][1]);}
+      if(pts.length===4){x.moveTo(pts[2][0],pts[2][1]);x.lineTo(pts[3][0],pts[3][1]);}
+    }
+    x.stroke();
+  }
+}
+let rt; window.addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(drawTopo,150)});
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change",drawTopo);
+route();
+</script>
