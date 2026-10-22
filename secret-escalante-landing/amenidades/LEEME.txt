@@ -1,0 +1,13 @@
+Coloque aquí las fotos de las amenidades con estos nombres exactos (JPG, máx. 1600 px).
+Cada foto aparece automáticamente en su tarjeta; si falta, se muestra el ícono.
+
+  piscina.jpg  ->  Piscina en el piso 33
+  gimnasio.jpg  ->  Gimnasio de 205 m²
+  cine.jpg  ->  Cine temático
+  coworking.jpg  ->  Coworking
+  lobby.jpg  ->  Lobby con concierge 24/7
+  seguridad.jpg  ->  Seguridad y acceso controlado
+  parque-mascotas.jpg  ->  Pet park
+  bosque.jpg  ->  Bosque privado
+  terraza.jpg  ->  Terraza y salones temáticos
+  biblioteca.jpg  ->  Biblioteca y lavandería
