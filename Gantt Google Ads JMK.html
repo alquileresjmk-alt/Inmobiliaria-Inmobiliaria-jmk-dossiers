@@ -1,0 +1,246 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Gantt Google Ads JMK</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: encabezado de marca, franja de hitos, Gantt diario con columna de tareas fija, detalle por fase debajo */
+:root{
+  --bg:#F5F6F9; --surface:#FFFFFF; --fg:#17183E; --muted:#5B5E7A; --line:#E1E3EC; --weekend:#EEF0F5;
+  --navy:#17183E; --gold:#B88F35; --today:#C0392B;
+  --pA:#3D5A98; --pB:#C9A24B; --pC:#2F7F7A; --pD:#5E8B3E; --pE:#8A5A9E;
+  --display:"Bricolage Grotesque", "Manrope", system-ui, sans-serif;
+  --body:"Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --day:24px; --label:290px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1024; --surface:#17183E; --fg:#ECEDF6; --muted:#A3A6C4; --line:#2B2D5A; --weekend:#1C1E48;
+  --navy:#ECEDF6; --gold:#D9B868; --today:#FF6B5B;
+  --pA:#7C9BE0; --pB:#D9B868; --pC:#5BB8B1; --pD:#8EC26A; --pE:#C493D8; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1024; --surface:#17183E; --fg:#ECEDF6; --muted:#A3A6C4; --line:#2B2D5A; --weekend:#1C1E48;
+  --navy:#ECEDF6; --gold:#D9B868; --today:#FF6B5B;
+  --pA:#7C9BE0; --pB:#D9B868; --pC:#5BB8B1; --pD:#8EC26A; --pE:#C493D8; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1240px;margin:0 auto;padding-block:32px 56px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:grid;gap:28px}
+header{display:grid;gap:10px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--display);font-size:clamp(28px,4.4vw,42px);line-height:1.08;margin:0;text-wrap:balance;color:var(--navy)}
+.lead{margin:0;max-width:68ch;color:var(--muted)}
+.milestones{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.ms{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:2px}
+.ms b{font-family:var(--display);font-size:22px;font-variant-numeric:tabular-nums}
+.ms span{font-size:13px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto;position:relative}
+.grid{display:grid;grid-template-columns:var(--label) calc(var(--days) * var(--day));min-width:max-content}
+.cell-label{position:sticky;left:0;z-index:2;background:var(--surface);border-right:1px solid var(--line);padding:0 12px;display:flex;align-items:center;gap:8px;min-height:34px;font-size:13.5px}
+.cell-label label{display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0}
+.cell-label input{accent-color:var(--pC);width:15px;height:15px;flex:none}
+.cell-label .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cell-label.done .t{text-decoration:line-through;color:var(--muted)}
+.phase-row .cell-label{font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;min-height:38px;padding-top:6px}
+.phase-row .cell-label .sw{width:10px;height:10px;border-radius:3px;flex:none}
+.track{position:relative;min-height:34px;border-bottom:1px solid var(--line);background-image:var(--wkbg)}
+.phase-row .track{min-height:38px}
+.head .cell-label,.head .track{min-height:52px;border-bottom:1px solid var(--line)}
+.head .cell-label{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.days{position:absolute;inset:0;display:flex}
+.days div{width:var(--day);flex:none;display:grid;place-items:end center;padding-bottom:6px;font-family:var(--mono);font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.days div.mon{color:var(--fg);font-weight:500}
+.months{position:absolute;left:0;right:0;top:6px;height:16px}
+.months span{position:absolute;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--fg);text-transform:uppercase;letter-spacing:.06em;padding-left:4px;border-left:1px solid var(--line)}
+.bar{position:absolute;top:8px;height:18px;border-radius:5px;background:var(--c);opacity:.92}
+.bar.span{top:15px;height:4px;opacity:.45}
+.phase-row .bar{top:15px;height:8px;border-radius:4px;opacity:.35}
+.dia{position:absolute;top:8px;width:16px;height:16px;transform:translateX(4px) rotate(45deg);background:var(--c);border-radius:2px}
+.rowdone .bar,.rowdone .dia{opacity:.3}
+.todayline{position:absolute;top:0;bottom:0;width:2px;background:var(--today);z-index:1;pointer-events:none}
+.todaytag{position:absolute;top:2px;font-family:var(--mono);font-size:10px;color:#fff;background:var(--today);padding:0 4px;border-radius:3px;transform:translateX(-50%)}
+.hint{font-size:13px;color:var(--muted);margin:0}
+section h2{font-family:var(--display);font-size:22px;margin:0 0 4px;color:var(--navy)}
+.phases{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px}
+.ph{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:grid;gap:10px;align-content:start;min-width:0}
+.ph h3{margin:0;font-size:16px;display:flex;align-items:center;gap:8px}
+.ph h3 .sw{width:12px;height:12px;border-radius:3px}
+.ph .dates{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.ph ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px}
+.ph li span{font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+@media (max-width:640px){:root{--label:170px;--day:22px}.cell-label{font-size:12.5px;padding:0 8px}}
+:focus-visible{outline:2px solid var(--pA);outline-offset:2px}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Inmobiliaria JMK® · Google Ads · cuenta 353-747-5691</div>
+    <h1>Plan de implementación de la campaña</h1>
+    <p class="lead">Ocho semanas, del 26 de octubre al 18 de diciembre de 2026. Primero se deja lista la medición y las páginas de realestatejmk.com, luego se montan las campañas Ventas y Alquileres, se lanzan el 9 de noviembre y se optimizan durante un mes antes de ampliar.</p>
+  </header>
+
+  <div class="milestones" id="ms"></div>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="chart" id="chart" role="region" aria-label="Diagrama de Gantt" tabindex="0"></div>
+  <p class="hint">Marque cada tarea al completarla; las marcas se guardan solo en este navegador. En el celular, deslice el diagrama hacia los lados.</p>
+
+  <section>
+    <h2>Detalle por fase</h2>
+    <div class="phases" id="phases"></div>
+  </section>
+
+  <footer>Inmobiliaria JMK® · www.realestatejmk.com · info@realestatejmk.com · +506 6019 0789 · Fechas en días hábiles; fines de semana sombreados.</footer>
+</div>
+
+<script>
+(function(){
+  const Y=2026, START=Date.UTC(Y,9,26), END=Date.UTC(Y,11,20);
+  const D=(m,d)=>Date.UTC(Y,m-1,d);
+  const DAYS=Math.round((END-START)/864e5)+1;
+  const idx=t=>Math.round((t-START)/864e5);
+  const MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  const fmt=t=>{const d=new Date(t);return d.getUTCDate()+" "+MES[d.getUTCMonth()]};
+
+  const PH=[
+    {id:"A",name:"Medición y conversiones",c:"--pA"},
+    {id:"B",name:"Páginas en realestatejmk.com",c:"--pB"},
+    {id:"C",name:"Montaje en Google Ads",c:"--pC"},
+    {id:"D",name:"Optimización del mes 1",c:"--pD"},
+    {id:"E",name:"Fase 2: ampliación",c:"--pE"}
+  ];
+  // s,e = inicio/fin; segs = tramos repetidos; ms = hito; span = actividad continua de fondo
+  const T=[
+    {p:"A",n:"Guardar conversión Formulario",s:D(10,26),e:D(10,26)},
+    {p:"A",n:"Crear página /whatsapp en Wix",s:D(10,26),e:D(10,27)},
+    {p:"A",n:"Apuntar botones de WhatsApp a /whatsapp",s:D(10,27),e:D(10,27)},
+    {p:"A",n:"Crear conversión WhatsApp (/whatsapp)",s:D(10,28),e:D(10,28)},
+    {p:"A",n:"Probar las conversiones",s:D(10,29),e:D(10,30)},
+
+    {p:"B",n:"Elegir propiedades para cada página",s:D(10,26),e:D(10,27)},
+    {p:"B",n:"/apartamentos-venta (bajo ₡70 M)",s:D(10,28),e:D(10,29)},
+    {p:"B",n:"/nunciatura",s:D(10,29),e:D(10,30)},
+    {p:"B",n:"/alquileres (bajo ₡500 mil)",s:D(10,30),e:D(11,2)},
+    {p:"B",n:"/secret-escalante",s:D(11,2),e:D(11,2)},
+    {p:"B",n:"/quintas",s:D(11,3),e:D(11,3)},
+    {p:"B",n:"/playa",s:D(11,4),e:D(11,4)},
+    {p:"B",n:"/casas-de-lujo",s:D(11,5),e:D(11,5)},
+    {p:"B",n:"Revisar todas las páginas en el celular",s:D(11,6),e:D(11,6)},
+
+    {p:"C",n:"Perfil de Empresa y facturación",s:D(11,2),e:D(11,3)},
+    {p:"C",n:"Lista de palabras clave negativas",s:D(11,3),e:D(11,3)},
+    {p:"C",n:"Campaña Alquileres: 1 grupo, 2 anuncios",s:D(11,4),e:D(11,4)},
+    {p:"C",n:"Campaña Ventas: 3 grupos, 5 anuncios",s:D(11,5),e:D(11,6)},
+    {p:"C",n:"Recursos: enlaces, llamada, ubicación",s:D(11,6),e:D(11,6)},
+    {p:"C",n:"Lanzamiento de Ventas y Alquileres",s:D(11,9),e:D(11,9),ms:true},
+
+    {p:"D",n:"Revisar aprobación de anuncios",s:D(11,10),e:D(11,10)},
+    {p:"D",n:"Registrar contactos en hoja de seguimiento",s:D(11,9),e:D(12,4),span:true},
+    {p:"D",n:"Revisar términos de búsqueda (semanal)",segs:[D(11,13),D(11,20),D(11,27),D(12,4)]},
+    {p:"D",n:"Ajustar CPC máximo",s:D(11,16),e:D(11,17)},
+    {p:"D",n:"Revisión del mes 1 y reasignar presupuesto",s:D(12,7),e:D(12,7),ms:true},
+
+    {p:"E",n:"Campaña Propietarios",s:D(12,8),e:D(12,10)},
+    {p:"E",n:"Campaña de Marca",s:D(12,9),e:D(12,9)},
+    {p:"E",n:"Páginas /en y /de + campaña Internacional",s:D(12,10),e:D(12,17)},
+    {p:"E",n:"Lanzamiento de la fase 2",s:D(12,18),e:D(12,18),ms:true}
+  ];
+  T.forEach((t,i)=>t.id="t"+i);
+
+  let done={};
+  try{done=JSON.parse(localStorage.getItem("jmk-gantt-done")||"{}")||{}}catch(e){done={}}
+  const save=()=>{try{localStorage.setItem("jmk-gantt-done",JSON.stringify(done))}catch(e){}};
+
+  // hitos
+  const ms=document.getElementById("ms");
+  [["26 oct","Inicio del trabajo"],["30 oct","Medición lista"],["9 nov","Lanzamiento"],["7 dic","Revisión del mes 1"],["18 dic","Lanzamiento fase 2"]]
+    .forEach(([d,l])=>{const el=document.createElement("div");el.className="ms";el.innerHTML="<b>"+d+"</b><span>"+l+"</span>";ms.appendChild(el)});
+
+  // leyenda
+  const lg=document.getElementById("legend");
+  PH.forEach(p=>{const s=document.createElement("span");s.innerHTML='<i style="background:var('+p.c+')"></i>'+p.name;lg.appendChild(s)});
+  const s2=document.createElement("span");s2.innerHTML='<i style="background:var(--fg);transform:rotate(45deg) scale(.8)"></i>Hito';lg.appendChild(s2);
+
+  // fondo de fines de semana
+  const dayPx=()=>parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--day"))||24;
+  function weekendBg(){
+    const w=dayPx(), stops=[];
+    for(let i=0;i<DAYS;i++){const wd=new Date(START+i*864e5).getUTCDay();if(wd===0||wd===6){stops.push("linear-gradient(var(--weekend),var(--weekend)) "+(i*w)+"px 0/"+w+"px 100% no-repeat")}}
+    return stops.join(",");
+  }
+
+  const chart=document.getElementById("chart");
+  function render(){
+    const w=dayPx();
+    chart.innerHTML="";
+    const g=document.createElement("div");g.className="grid";g.style.setProperty("--days",DAYS);
+    g.style.setProperty("--wkbg",weekendBg());
+    // encabezado
+    const hl=document.createElement("div");hl.className="cell-label";hl.textContent="Tarea";
+    const ht=document.createElement("div");ht.className="track";
+    const months=document.createElement("div");months.className="months";
+    const days=document.createElement("div");days.className="days";
+    for(let i=0;i<DAYS;i++){const d=new Date(START+i*864e5);const el=document.createElement("div");el.textContent=d.getUTCDate();if(d.getUTCDay()===1)el.className="mon";days.appendChild(el);
+      if(i===0||d.getUTCDate()===1){const m=document.createElement("span");m.style.left=(i*w)+"px";m.textContent=MES[d.getUTCMonth()]+" "+Y;months.appendChild(m)}}
+    ht.append(months,days);
+    const hr=document.createElement("div");hr.className="head";hr.style.display="contents";hr.append(hl,ht);g.appendChild(hr);
+
+    PH.forEach(p=>{
+      const tasks=T.filter(t=>t.p===p.id);
+      const all=tasks.flatMap(t=>t.segs?t.segs:[t.s,t.e]);
+      const ps=Math.min(...all),pe=Math.max(...all);
+      const l=document.createElement("div");l.className="cell-label";l.innerHTML='<span class="sw" style="background:var('+p.c+')"></span><span class="t">'+p.name+'</span>';
+      const tr=document.createElement("div");tr.className="track";
+      const b=document.createElement("div");b.className="bar";b.style.setProperty("--c","var("+p.c+")");b.style.left=(idx(ps)*w+2)+"px";b.style.width=((idx(pe)-idx(ps)+1)*w-4)+"px";b.title=p.name+": "+fmt(ps)+" – "+fmt(pe);tr.appendChild(b);
+      const row=document.createElement("div");row.className="phase-row";row.style.display="contents";row.append(l,tr);g.appendChild(row);
+
+      tasks.forEach(t=>{
+        const lab=document.createElement("div");lab.className="cell-label"+(done[t.id]?" done":"");
+        const dates=t.segs?t.segs.map(fmt).join(", "):(t.s===t.e?fmt(t.s):fmt(t.s)+" – "+fmt(t.e));
+        lab.innerHTML='<label><input type="checkbox" id="'+t.id+'"'+(done[t.id]?" checked":"")+'><span class="t" title="'+t.n+' · '+dates+'">'+t.n+'</span></label>';
+        const tk=document.createElement("div");tk.className="track"+(done[t.id]?" rowdone":"");
+        const add=(s,e,cls)=>{const el=document.createElement("div");el.className=cls;el.style.setProperty("--c","var("+p.c+")");el.style.left=(idx(s)*w+(cls==="dia"?0:2))+"px";if(cls!=="dia")el.style.width=((idx(e)-idx(s)+1)*w-4)+"px";el.title=t.n+" · "+dates;tk.appendChild(el)};
+        if(t.ms) add(t.s,t.s,"dia");
+        else if(t.segs) t.segs.forEach(s=>add(s,s,"bar"));
+        else add(t.s,t.e,t.span?"bar span":"bar");
+        const r=document.createElement("div");r.style.display="contents";r.append(lab,tk);g.appendChild(r);
+        lab.querySelector("input").addEventListener("change",ev=>{done[t.id]=ev.target.checked;if(!ev.target.checked)delete done[t.id];save();lab.classList.toggle("done",ev.target.checked);tk.classList.toggle("rowdone",ev.target.checked)});
+      });
+    });
+    chart.appendChild(g);
+    // línea de hoy
+    const now=new Date(), today=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate());
+    if(today>=START&&today<=END){
+      const lw=g.firstChild.firstChild.getBoundingClientRect().width;
+      const x=lw+idx(today)*w+w/2;
+      const line=document.createElement("div");line.className="todayline";line.style.left=x+"px";
+      const tag=document.createElement("div");tag.className="todaytag";tag.textContent="hoy";tag.style.left="1px";line.appendChild(tag);
+      g.style.position="relative";g.appendChild(line);
+    }
+  }
+  render();
+  let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(render,150)});
+
+  // detalle por fase
+  const notes={
+    A:"Sin esto, Google no sabe qué clics terminan en contacto. Las llamadas ya están medidas con 3 acciones.",
+    B:"Cada anuncio lleva a una página que muestra lo que promete. Cada página lleva botón de WhatsApp (a /whatsapp), teléfono y formulario corto.",
+    C:"Presupuesto: Ventas US$5,25/día y Alquileres US$3,00/día. Puja Maximizar clics con CPC máximo de US$1,50.",
+    D:"Cada viernes revise términos de búsqueda y agregue negativas. El 7 de diciembre pase la reserva de US$50 al anuncio con menor costo por contacto.",
+    E:"Se activa solo si el mes 1 dejó contactos medidos. La campaña internacional reusa los anuncios de playa, lujo e inversión en inglés y alemán."
+  };
+  const ph=document.getElementById("phases");
+  PH.forEach(p=>{
+    const tasks=T.filter(t=>t.p===p.id);
+    const all=tasks.flatMap(t=>t.segs?t.segs:[t.s,t.e]);
+    const el=document.createElement("div");el.className="ph";
+    el.innerHTML='<h3><span class="sw" style="background:var('+p.c+')"></span>'+p.name+'</h3><div class="dates">'+fmt(Math.min(...all))+' – '+fmt(Math.max(...all))+' · '+tasks.length+' tareas</div><p class="hint">'+notes[p.id]+'</p><ul>'+
+      tasks.map(t=>'<li>'+t.n+' <span>'+(t.segs?t.segs.map(fmt).join(", "):(t.s===t.e?fmt(t.s):fmt(t.s)+" – "+fmt(t.e)))+'</span></li>').join("")+'</ul>';
+    ph.appendChild(el);
+  });
+})();
+</script>
+
+</body></html>
